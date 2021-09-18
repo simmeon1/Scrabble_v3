@@ -9,7 +9,7 @@ namespace Scrabble_v3_Tests.UnitTests
     [TestClass]
     public class BoardTileOrganiser_UnitTests
     {
-        BoardTileOrganiser organiser = new();
+        readonly BoardTileOrganiser organiser = new();
 
         [TestMethod]
         public void TwoVerticallyConnectedTilesSuccessfullyCreated()
