@@ -23,7 +23,7 @@ namespace Scrabble_v3_Tests.UnitTests
         public void ToStringPrintsTwoHorizontalTilesWithLettersCorrectly()
         {
 
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { new BoardTileDto { Letter = "A" }, new BoardTileDto { Letter = "B" } }
             });
             Assert.IsTrue(board.ToString().Equals("[A][B]"));
@@ -32,7 +32,7 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void ToStringPrintsThreeHorizontalTilesWithLettersCorrectly()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { new BoardTileDto { Letter = "" }, new BoardTileDto { Letter = "B" }, new BoardTileDto { Letter = "C" } }
             });
             Assert.IsTrue(board.ToString().Equals("[ ][B][C]"));
@@ -41,7 +41,7 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void ToStringPrintsTwoVerticalTilesWithLettersCorrectly()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { new BoardTileDto { Letter = "A" } },
                 new BoardTileDto[] { new BoardTileDto { Letter = "B" } }
             });
@@ -51,7 +51,7 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void ToStringPrintsNullTilesCorrectly()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { null, null },
                 new BoardTileDto[] { new BoardTileDto { Letter = "A" }, new BoardTileDto { Letter = "B" } }
             });
@@ -61,49 +61,49 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetTileGetsCorrectTileFromBoardWithMultipleRows()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 } }, new BoardTileDto[] { new BoardTileDto { Id = 2 } } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 } }, new BoardTileDto[] { new BoardTileDto { Id = 2 } } });
             Assert.IsTrue(board.GetTile(2, 1).Id == 2);
         }
         
         [TestMethod]
         public void GetTileGetsCorrectTileFromBoardWithMultipleColumns()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 }, new BoardTileDto { Id = 2 } } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 }, new BoardTileDto { Id = 2 } } });
             Assert.IsTrue(board.GetTile(1, 2).Id == 2);
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForNullTile()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { null } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { null } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(1, 1), "Tile at row 1, column 1 is not in play.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForRowBelowZero()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(-1, 1), "Row -1 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForRowAboveTheLast()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() }, new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() }, new BoardTileDto[] { new BoardTileDto() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(3, 1), "Row 3 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForColumnBelowZero()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(1, -1), $"Column -1 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForColumnAboveTheLast()
         {
-            Board board = GetBoard(tileArrayCreator, new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto(), new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto(), new BoardTileDto() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(1, 3), $"Column 3 is not valid.");
         }
 
@@ -115,9 +115,9 @@ namespace Scrabble_v3_Tests.UnitTests
         //    Assert.IsTrue(board.GetTile(1,1));
         //}
 
-        private static Board GetBoard(Mock<IBoardTileArrayCreator> tileArrayCreator, BoardTileDto[][] arr)
+        private Board GetBoardWithTiles(BoardTileDto[][] tiles)
         {
-            tileArrayCreator.Setup(x => x.GetBoardTileArray(It.IsAny<IEnumerable<BoardTileDto>>())).Returns(arr);
+            tileArrayCreator.Setup(x => x.GetBoardTileArray(It.IsAny<IEnumerable<BoardTileDto>>())).Returns(tiles);
             return new(tileArrayCreator.Object, new List<BoardTileDto>());
         }
     }
