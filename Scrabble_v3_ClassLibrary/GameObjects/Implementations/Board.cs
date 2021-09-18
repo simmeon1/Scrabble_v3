@@ -30,5 +30,26 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             }
             return sb.ToString();
         }
+
+        //public void PlaceLetter(int row, int column, string letter, int score)
+        //{
+        //    BoardTileDto tile = GetTileIfItIsInPlay(row, column);
+        //}
+
+        public BoardTileDto GetTile(int row, int column)
+        {
+            return GetTileIfItIsInPlay(row, column);
+        }
+
+        private BoardTileDto GetTileIfItIsInPlay(int row, int column)
+        {
+            int actualRowIndex = row - 1;
+            int actualColumnIndex = column - 1;
+            if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) throw new Exception($"Row {row} is not valid.");
+            if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($"Column {column} is not valid.");
+            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
+            if (tile == null) throw new Exception($"Tile at row {row}, column {column} is not in play.");
+            return tile;
+        }
     }
 }
