@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrabble_v3_ClassLibrary", "Scrabble_v3_ClassLibrary\Scrabble_v3_ClassLibrary.csproj", "{626682D2-88D0-4F46-BCAA-1402AAE90ACA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrabble_v3_Tests", "Scrabble_v3_Tests\Scrabble_v3_Tests.csproj", "{95176F67-8C9E-4394-AA67-5E61F45EEFC2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{626682D2-88D0-4F46-BCAA-1402AAE90ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{626682D2-88D0-4F46-BCAA-1402AAE90ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{626682D2-88D0-4F46-BCAA-1402AAE90ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{626682D2-88D0-4F46-BCAA-1402AAE90ACA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95176F67-8C9E-4394-AA67-5E61F45EEFC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95176F67-8C9E-4394-AA67-5E61F45EEFC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95176F67-8C9E-4394-AA67-5E61F45EEFC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95176F67-8C9E-4394-AA67-5E61F45EEFC2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EFFE676B-A3F9-455C-83B4-122F26E9C127}
+	EndGlobalSection
+EndGlobal
