@@ -9,7 +9,9 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void ToStringIsCorrect()
         {
-            Assert.IsTrue(new BoardTileDto(1, 2, 3, 4, true).ToString().Equals("Id = 1, BoardId = 2, Row = 3, Column = 4, IsStart = True"));
+            Assert.IsTrue(new BoardTileDto(1, 2, 3, 4, true, "A", 5).ToString().Equals(
+                "Id = 1, BoardId = 2, Row = 3, Column = 4, IsStart = True, Letter = A, Score = 5"
+            ));
         }
     }
 }
