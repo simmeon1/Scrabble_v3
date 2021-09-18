@@ -226,7 +226,7 @@ var assemblies = [
     "classes": [
       { "name": "Scrabble_v3_ClassLibrary.DataObjects.BoardTileDto", "rp": "Scrabble_v3_ClassLibrary_BoardTileDto.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 35, "ct": "LineCoverage", "mc": "-", "cb": 0, "tb": 0, "lch": [], "bch": [], "hc": [] },
       { "name": "Scrabble_v3_ClassLibrary.GameObjects.Board", "rp": "Scrabble_v3_ClassLibrary_Board.html", "cl": 20, "ucl": 0, "cal": 20, "tl": 35, "ct": "LineCoverage", "mc": "-", "cb": 10, "tb": 10, "lch": [], "bch": [], "hc": [] },
-      { "name": "Scrabble_v3_ClassLibrary.GameObjects.BoardTileArrayCreator", "rp": "Scrabble_v3_ClassLibrary_BoardTileArrayCreator.html", "cl": 45, "ucl": 0, "cal": 45, "tl": 70, "ct": "LineCoverage", "mc": "-", "cb": 42, "tb": 42, "lch": [], "bch": [], "hc": [] },
+      { "name": "Scrabble_v3_ClassLibrary.GameObjects.BoardTileArrayCreator", "rp": "Scrabble_v3_ClassLibrary_BoardTileArrayCreator.html", "cl": 46, "ucl": 0, "cal": 46, "tl": 72, "ct": "LineCoverage", "mc": "-", "cb": 44, "tb": 44, "lch": [], "bch": [], "hc": [] },
     ]},
 ];
 

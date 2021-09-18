@@ -9,8 +9,9 @@ namespace Scrabble_v3_ClassLibrary.GameObjects
         public const string ROWS_MUST_BE_MORE_THAN_0 = "Rows must be more than 0";
         public const string COLUMNS_MUST_BE_MORE_THAN_0 = "Columns must be more than 0";
         public const string COUNT_OF_START_TILES_MUST_BE_EXACTLY_1 = "Count of start tiles must be exactly 1.";
+        public const string TILE_IS_NULL = "Tile is null.";
 
-        public BoardTileDto[][] GetOrganisedTiles(IEnumerable<BoardTileDto> tiles)
+        public BoardTileDto[][] GetBoardTileArray(IEnumerable<BoardTileDto> tiles)
         {
             BoardTileDto[][] tileArray = InitializeTileArrayFromTiles(tiles);
             PopulateTileArrayWithTiles(tileArray, tiles);
@@ -26,6 +27,7 @@ namespace Scrabble_v3_ClassLibrary.GameObjects
 
             foreach (BoardTileDto tile in tiles)
             {
+                if (tile == null) throw new Exception(TILE_IS_NULL);
                 if (tile.Row < 0) throw new Exception($"Tile {tile} has a row index below 0.");
                 if (tile.Column < 0) throw new Exception($"Tile {tile} has a column index below 0.");
 

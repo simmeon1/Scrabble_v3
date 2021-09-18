@@ -55,7 +55,7 @@ namespace Scrabble_v3_Tests.UnitTests
 
         private Board CreateBoardFromTiles(List<BoardTileDto> tiles)
         {
-            return new(organiser.GetOrganisedTiles(tiles));
+            return new(organiser.GetBoardTileArray(tiles));
         }
     }
 }
