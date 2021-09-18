@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Scrabble_v3_ClassLibrary.GameObjects
 {
-    public class BoardTileOrganiser
+    public class BoardTileArrayCreator
     {
         public const string ROWS_MUST_BE_MORE_THAN_0 = "Rows must be more than 0";
         public const string COLUMNS_MUST_BE_MORE_THAN_0 = "Columns must be more than 0";

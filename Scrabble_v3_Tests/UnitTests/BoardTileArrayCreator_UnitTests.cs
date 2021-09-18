@@ -7,9 +7,9 @@ using System.Collections.Generic;
 namespace Scrabble_v3_Tests.UnitTests
 {
     [TestClass]
-    public class BoardTileOrganiser_UnitTests
+    public class BoardTileArrayCreator_UnitTests
     {
-        readonly BoardTileOrganiser organiser = new();
+        readonly BoardTileArrayCreator organiser = new();
 
         [TestMethod]
         public void TwoVerticallyConnectedTilesSuccessfullyCreated()
@@ -34,19 +34,19 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void ArrayWithNoRowsThrowsException()
         {
-            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(0, 1, true) }), BoardTileOrganiser.ROWS_MUST_BE_MORE_THAN_0);
+            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(0, 1, true) }), BoardTileArrayCreator.ROWS_MUST_BE_MORE_THAN_0);
         }
 
         [TestMethod]
         public void ArrayWithNoColumnsThrowsException()
         {
-            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(1, 0, true) }), BoardTileOrganiser.COLUMNS_MUST_BE_MORE_THAN_0);
+            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(1, 0, true) }), BoardTileArrayCreator.COLUMNS_MUST_BE_MORE_THAN_0);
         }
         
         [TestMethod]
         public void ArrayWithNoStartTileThrowsException()
         {
-            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(1, 1) }), BoardTileOrganiser.COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);
+            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { CreateTile(1, 1) }), BoardTileArrayCreator.COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);
         }
         
         [TestMethod]
