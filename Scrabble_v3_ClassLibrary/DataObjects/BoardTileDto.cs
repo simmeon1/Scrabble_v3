@@ -16,6 +16,10 @@ namespace Scrabble_v3_ClassLibrary.DataObjects
         public string Letter { get; set; }
         public int Score { get; set; }
 
+        public BoardTileDto()
+        {
+        }
+
         public BoardTileDto(int id, int boardId, int row, int column, bool isStart, string letter, int score)
         {
             Id = id;

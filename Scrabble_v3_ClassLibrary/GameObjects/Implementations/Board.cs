@@ -1,18 +1,17 @@
 ﻿using Scrabble_v3_ClassLibrary.DataObjects;
+using Scrabble_v3_ClassLibrary.GameObjects.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 {
     public class Board
     {
         private BoardTileDto[][] Tiles { get; set; }
-        public Board(BoardTileDto[][] tiles)
+        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<BoardTileDto> tiles)
         {
-            Tiles = tiles;
+            Tiles = tileArrayCreator.GetBoardTileArray(tiles);
         }
 
         public override string ToString()

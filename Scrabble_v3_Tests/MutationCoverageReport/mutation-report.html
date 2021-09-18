@@ -206,7 +206,7 @@
   "files": {
     "DataObjects\\BoardTileDto.cs": {
       "language": "cs",
-      "source": "using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.DataObjects\r\n{\r\n    public class BoardTileDto\r\n    {\r\n        public int Id { get; set; }\r\n        public int BoardId { get; set; }\r\n        public int Row { get; set; }\r\n        public int Column { get; set; }\r\n        public bool IsStart { get; set; }\r\n        public string Letter { get; set; }\r\n        public int Score { get; set; }\r\n\r\n        public BoardTileDto(int id, int boardId, int row, int column, bool isStart, string letter, int score)\r\n        {\r\n            Id = id;\r\n            BoardId = boardId;\r\n            Row = row;\r\n            Column = column;\r\n            IsStart = isStart;\r\n            Letter = letter;\r\n            Score = score;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            return $\"Id = {Id}, BoardId = {BoardId}, Row = {Row}, Column = {Column}, IsStart = {IsStart}, Letter = {Letter}, Score = {Score}\";\r\n        }\r\n    }\r\n}\r\n",
+      "source": "using System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.DataObjects\r\n{\r\n    public class BoardTileDto\r\n    {\r\n        public int Id { get; set; }\r\n        public int BoardId { get; set; }\r\n        public int Row { get; set; }\r\n        public int Column { get; set; }\r\n        public bool IsStart { get; set; }\r\n        public string Letter { get; set; }\r\n        public int Score { get; set; }\r\n\r\n        public BoardTileDto()\r\n        {\r\n        }\r\n\r\n        public BoardTileDto(int id, int boardId, int row, int column, bool isStart, string letter, int score)\r\n        {\r\n            Id = id;\r\n            BoardId = boardId;\r\n            Row = row;\r\n            Column = column;\r\n            IsStart = isStart;\r\n            Letter = letter;\r\n            Score = score;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            return $\"Id = {Id}, BoardId = {BoardId}, Row = {Row}, Column = {Column}, IsStart = {IsStart}, Letter = {Letter}, Score = {Score}\";\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
           "id": "0",
@@ -214,11 +214,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 32,
+              "line": 36,
               "column": 20
             },
             "end": {
-              "line": 32,
+              "line": 36,
               "column": 142
             }
           },
@@ -226,9 +226,9 @@
         }
       ]
     },
-    "GameObjects\\Board.cs": {
+    "GameObjects\\Implementations\\Board.cs": {
       "language": "cs",
-      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Linq;\r\nusing System.Text;\r\nusing System.Threading.Tasks;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects\r\n{\r\n    public class Board\r\n    {\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        public Board(BoardTileDto[][] tiles)\r\n        {\r\n            Tiles = tiles;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n    }\r\n}\r\n",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class Board\r\n    {\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            Tiles = tileArrayCreator.GetBoardTileArray(tiles);\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
           "id": "1",
@@ -236,11 +236,11 @@
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 20,
+              "line": 19,
               "column": 36
             },
             "end": {
-              "line": 20,
+              "line": 19,
               "column": 38
             }
           },
@@ -252,11 +252,11 @@
           "replacement": "sb.Length <" + " 0",
           "location": {
             "start": {
-              "line": 23,
+              "line": 22,
               "column": 21
             },
             "end": {
-              "line": 23,
+              "line": 22,
               "column": 34
             }
           },
@@ -268,11 +268,11 @@
           "replacement": "sb.Length >= 0",
           "location": {
             "start": {
-              "line": 23,
+              "line": 22,
               "column": 21
             },
             "end": {
-              "line": 23,
+              "line": 22,
               "column": 34
             }
           },
@@ -284,11 +284,11 @@
           "replacement": "!(sb.Length > 0)",
           "location": {
             "start": {
-              "line": 23,
+              "line": 22,
               "column": 21
             },
             "end": {
-              "line": 23,
+              "line": 22,
               "column": 34
             }
           },
@@ -300,11 +300,11 @@
           "replacement": "\"\"",
           "location": {
             "start": {
-              "line": 26,
+              "line": 25,
               "column": 37
             },
             "end": {
-              "line": 26,
+              "line": 25,
               "column": 40
             }
           },
@@ -316,11 +316,11 @@
           "replacement": "tile != null",
           "location": {
             "start": {
-              "line": 27,
+              "line": 26,
               "column": 25
             },
             "end": {
-              "line": 27,
+              "line": 26,
               "column": 37
             }
           },
@@ -332,11 +332,11 @@
           "replacement": "\"\"",
           "location": {
             "start": {
-              "line": 27,
+              "line": 26,
               "column": 48
             },
             "end": {
-              "line": 27,
+              "line": 26,
               "column": 51
             }
           },
@@ -348,11 +348,11 @@
           "replacement": "tile.Letter.Equals(\"\")",
           "location": {
             "start": {
-              "line": 28,
+              "line": 27,
               "column": 30
             },
             "end": {
-              "line": 28,
+              "line": 27,
               "column": 53
             }
           },
@@ -364,11 +364,11 @@
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 28,
+              "line": 27,
               "column": 50
             },
             "end": {
-              "line": 28,
+              "line": 27,
               "column": 52
             }
           },
@@ -380,11 +380,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 29,
+              "line": 28,
               "column": 31
             },
             "end": {
-              "line": 29,
+              "line": 28,
               "column": 44
             }
           },
@@ -392,9 +392,9 @@
         }
       ]
     },
-    "GameObjects\\BoardTileArrayCreator.cs": {
+    "GameObjects\\Implementations\\BoardTileArrayCreator.cs": {
       "language": "cs",
-      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects\r\n{\r\n    public class BoardTileArrayCreator\r\n    {\r\n        public const string ROWS_MUST_BE_MORE_THAN_0 = \"Rows must be more than 0\";\r\n        public const string COLUMNS_MUST_BE_MORE_THAN_0 = \"Columns must be more than 0\";\r\n        public const string COUNT_OF_START_TILES_MUST_BE_EXACTLY_1 = \"Count of start tiles must be exactly 1.\";\r\n        public const string TILE_IS_NULL = \"Tile is null.\";\r\n\r\n        public BoardTileDto[][] GetBoardTileArray(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            BoardTileDto[][] tileArray = InitializeTileArrayFromTiles(tiles);\r\n            PopulateTileArrayWithTiles(tileArray, tiles);\r\n            CheckIfTileArrayContainsUnconnectedTiles(tileArray);\r\n            return tileArray;\r\n        }\r\n\r\n        private static BoardTileDto[][] InitializeTileArrayFromTiles(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            int highestRow = 0;\r\n            int highestColumn = 0;\r\n            int countOfStartTiles = 0;\r\n\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tile == null) throw new Exception(TILE_IS_NULL);\r\n                if (tile.Row <" + " 0) throw new Exception($\"Tile {tile} has a row index below 0.\");\r\n                if (tile.Column <" + " 0) throw new Exception($\"Tile {tile} has a column index below 0.\");\r\n\r\n                if (tile.IsStart) countOfStartTiles++;\r\n                highestRow = Math.Max(highestRow, tile.Row);\r\n                highestColumn = Math.Max(highestColumn, tile.Column);\r\n            }\r\n\r\n            if (countOfStartTiles != 1) throw new Exception(COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);\r\n            if (highestRow == 0) throw new Exception(ROWS_MUST_BE_MORE_THAN_0);\r\n            if (highestColumn == 0) throw new Exception(COLUMNS_MUST_BE_MORE_THAN_0);\r\n\r\n            BoardTileDto[][] organisedTiles = new BoardTileDto[highestRow][];\r\n            for (int i = 0; i <" + " organisedTiles.Length; i++) organisedTiles[i] = new BoardTileDto[highestColumn];\r\n            return organisedTiles;\r\n        }\r\n\r\n        private static void PopulateTileArrayWithTiles(BoardTileDto[][] tileArray, IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tileArray[tile.Row - 1][tile.Column - 1] != null) throw new Exception($\"Tile {tile} is already initialized.\");\r\n                tileArray[tile.Row - 1][tile.Column - 1] = tile;\r\n            }\r\n        }\r\n\r\n        private static void CheckIfTileArrayContainsUnconnectedTiles(BoardTileDto[][] tileArray)\r\n        {\r\n            for (int i = 0; i <" + " tileArray.Length; i++)\r\n            {\r\n                for (int j = 0; j <" + " tileArray[i].Length; j++)\r\n                {\r\n                    BoardTileDto tile = tileArray[i][j];\r\n                    if (tile == null) continue;\r\n                    bool tileIsHorizontallyConnectedToTile = (j > 0 && tileArray[i][j - 1] != null) || (j <" + " tileArray[i].Length - 1 && tileArray[i][j + 1] != null);\r\n                    bool tileIsVerticallyConnectedToTile = (i > 0 && tileArray[i - 1][j] != null) || (i <" + " tileArray.Length - 1 && tileArray[i + 1][j] != null);\r\n                    if (!tileIsHorizontallyConnectedToTile && !tileIsVerticallyConnectedToTile) throw new Exception($\"Tile {tile} is not horizontally or vertically connected to another tile.\");\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class BoardTileArrayCreator: IBoardTileArrayCreator\r\n    {\r\n        public const string ROWS_MUST_BE_MORE_THAN_0 = \"Rows must be more than 0\";\r\n        public const string COLUMNS_MUST_BE_MORE_THAN_0 = \"Columns must be more than 0\";\r\n        public const string COUNT_OF_START_TILES_MUST_BE_EXACTLY_1 = \"Count of start tiles must be exactly 1.\";\r\n        public const string TILE_IS_NULL = \"Tile is null.\";\r\n\r\n        public BoardTileDto[][] GetBoardTileArray(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            BoardTileDto[][] tileArray = InitializeTileArrayFromTiles(tiles);\r\n            PopulateTileArrayWithTiles(tileArray, tiles);\r\n            CheckIfTileArrayContainsUnconnectedTiles(tileArray);\r\n            return tileArray;\r\n        }\r\n\r\n        private static BoardTileDto[][] InitializeTileArrayFromTiles(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            int highestRow = 0;\r\n            int highestColumn = 0;\r\n            int countOfStartTiles = 0;\r\n\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tile == null) throw new Exception(TILE_IS_NULL);\r\n                if (tile.Row <" + " 0) throw new Exception($\"Tile {tile} has a row index below 0.\");\r\n                if (tile.Column <" + " 0) throw new Exception($\"Tile {tile} has a column index below 0.\");\r\n\r\n                if (tile.IsStart) countOfStartTiles++;\r\n                highestRow = Math.Max(highestRow, tile.Row);\r\n                highestColumn = Math.Max(highestColumn, tile.Column);\r\n            }\r\n\r\n            if (countOfStartTiles != 1) throw new Exception(COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);\r\n            if (highestRow == 0) throw new Exception(ROWS_MUST_BE_MORE_THAN_0);\r\n            if (highestColumn == 0) throw new Exception(COLUMNS_MUST_BE_MORE_THAN_0);\r\n\r\n            BoardTileDto[][] organisedTiles = new BoardTileDto[highestRow][];\r\n            for (int i = 0; i <" + " organisedTiles.Length; i++) organisedTiles[i] = new BoardTileDto[highestColumn];\r\n            return organisedTiles;\r\n        }\r\n\r\n        private static void PopulateTileArrayWithTiles(BoardTileDto[][] tileArray, IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tileArray[tile.Row - 1][tile.Column - 1] != null) throw new Exception($\"Tile {tile} is already initialized.\");\r\n                tileArray[tile.Row - 1][tile.Column - 1] = tile;\r\n            }\r\n        }\r\n\r\n        private static void CheckIfTileArrayContainsUnconnectedTiles(BoardTileDto[][] tileArray)\r\n        {\r\n            for (int i = 0; i <" + " tileArray.Length; i++)\r\n            {\r\n                for (int j = 0; j <" + " tileArray[i].Length; j++)\r\n                {\r\n                    BoardTileDto tile = tileArray[i][j];\r\n                    if (tile == null) continue;\r\n                    bool tileIsHorizontallyConnectedToTile = (j > 0 && tileArray[i][j - 1] != null) || (j <" + " tileArray[i].Length - 1 && tileArray[i][j + 1] != null);\r\n                    bool tileIsVerticallyConnectedToTile = (i > 0 && tileArray[i - 1][j] != null) || (i <" + " tileArray.Length - 1 && tileArray[i + 1][j] != null);\r\n                    if (!tileIsHorizontallyConnectedToTile && !tileIsVerticallyConnectedToTile) throw new Exception($\"Tile {tile} is not horizontally or vertically connected to another tile.\");\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
           "id": "11",
@@ -402,11 +402,11 @@
           "replacement": "tile != null",
           "location": {
             "start": {
-              "line": 30,
+              "line": 31,
               "column": 21
             },
             "end": {
-              "line": 30,
+              "line": 31,
               "column": 33
             }
           },
@@ -418,11 +418,11 @@
           "replacement": "tile.Row > 0",
           "location": {
             "start": {
-              "line": 31,
+              "line": 32,
               "column": 21
             },
             "end": {
-              "line": 31,
+              "line": 32,
               "column": 33
             }
           },
@@ -434,11 +434,11 @@
           "replacement": "tile.Row <" + "= 0",
           "location": {
             "start": {
-              "line": 31,
+              "line": 32,
               "column": 21
             },
             "end": {
-              "line": 31,
+              "line": 32,
               "column": 33
             }
           },
@@ -450,11 +450,11 @@
           "replacement": "!(tile.Row <" + " 0)",
           "location": {
             "start": {
-              "line": 31,
+              "line": 32,
               "column": 21
             },
             "end": {
-              "line": 31,
+              "line": 32,
               "column": 33
             }
           },
@@ -466,11 +466,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 31,
+              "line": 32,
               "column": 55
             },
             "end": {
-              "line": 31,
+              "line": 32,
               "column": 94
             }
           },
@@ -482,11 +482,11 @@
           "replacement": "tile.Column > 0",
           "location": {
             "start": {
-              "line": 32,
+              "line": 33,
               "column": 21
             },
             "end": {
-              "line": 32,
+              "line": 33,
               "column": 36
             }
           },
@@ -498,11 +498,11 @@
           "replacement": "tile.Column <" + "= 0",
           "location": {
             "start": {
-              "line": 32,
+              "line": 33,
               "column": 21
             },
             "end": {
-              "line": 32,
+              "line": 33,
               "column": 36
             }
           },
@@ -514,11 +514,11 @@
           "replacement": "!(tile.Column <" + " 0)",
           "location": {
             "start": {
-              "line": 32,
+              "line": 33,
               "column": 21
             },
             "end": {
-              "line": 32,
+              "line": 33,
               "column": 36
             }
           },
@@ -530,11 +530,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 32,
+              "line": 33,
               "column": 58
             },
             "end": {
-              "line": 32,
+              "line": 33,
               "column": 100
             }
           },
@@ -546,11 +546,11 @@
           "replacement": "!(tile.IsStart)",
           "location": {
             "start": {
-              "line": 34,
+              "line": 35,
               "column": 21
             },
             "end": {
-              "line": 34,
+              "line": 35,
               "column": 33
             }
           },
@@ -562,11 +562,11 @@
           "replacement": "countOfStartTiles--",
           "location": {
             "start": {
-              "line": 34,
+              "line": 35,
               "column": 35
             },
             "end": {
-              "line": 34,
+              "line": 35,
               "column": 54
             }
           },
@@ -578,11 +578,11 @@
           "replacement": "Math.Min(highestRow, tile.Row)",
           "location": {
             "start": {
-              "line": 35,
+              "line": 36,
               "column": 30
             },
             "end": {
-              "line": 35,
+              "line": 36,
               "column": 60
             }
           },
@@ -594,11 +594,11 @@
           "replacement": "Math.Min(highestColumn, tile.Column)",
           "location": {
             "start": {
-              "line": 36,
+              "line": 37,
               "column": 33
             },
             "end": {
-              "line": 36,
+              "line": 37,
               "column": 69
             }
           },
@@ -610,11 +610,11 @@
           "replacement": "countOfStartTiles == 1",
           "location": {
             "start": {
-              "line": 39,
+              "line": 40,
               "column": 17
             },
             "end": {
-              "line": 39,
+              "line": 40,
               "column": 39
             }
           },
@@ -626,11 +626,11 @@
           "replacement": "highestRow != 0",
           "location": {
             "start": {
-              "line": 40,
+              "line": 41,
               "column": 17
             },
             "end": {
-              "line": 40,
+              "line": 41,
               "column": 32
             }
           },
@@ -642,11 +642,11 @@
           "replacement": "highestColumn != 0",
           "location": {
             "start": {
-              "line": 41,
+              "line": 42,
               "column": 17
             },
             "end": {
-              "line": 41,
+              "line": 42,
               "column": 35
             }
           },
@@ -658,11 +658,11 @@
           "replacement": "i--",
           "location": {
             "start": {
-              "line": 44,
+              "line": 45,
               "column": 56
             },
             "end": {
-              "line": 44,
+              "line": 45,
               "column": 59
             }
           },
@@ -674,11 +674,11 @@
           "replacement": "i > organisedTiles.Length",
           "location": {
             "start": {
-              "line": 44,
+              "line": 45,
               "column": 29
             },
             "end": {
-              "line": 44,
+              "line": 45,
               "column": 54
             }
           },
@@ -690,11 +690,11 @@
           "replacement": "i <" + "= organisedTiles.Length",
           "location": {
             "start": {
-              "line": 44,
+              "line": 45,
               "column": 29
             },
             "end": {
-              "line": 44,
+              "line": 45,
               "column": 54
             }
           },
@@ -706,11 +706,11 @@
           "replacement": "tileArray[tile.Row - 1][tile.Column - 1] == null",
           "location": {
             "start": {
-              "line": 52,
+              "line": 53,
               "column": 21
             },
             "end": {
-              "line": 52,
+              "line": 53,
               "column": 69
             }
           },
@@ -722,11 +722,11 @@
           "replacement": "tile.Row + 1",
           "location": {
             "start": {
-              "line": 52,
+              "line": 53,
               "column": 31
             },
             "end": {
-              "line": 52,
+              "line": 53,
               "column": 43
             }
           },
@@ -738,11 +738,11 @@
           "replacement": "tile.Column + 1",
           "location": {
             "start": {
-              "line": 52,
+              "line": 53,
               "column": 45
             },
             "end": {
-              "line": 52,
+              "line": 53,
               "column": 60
             }
           },
@@ -754,11 +754,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 52,
+              "line": 53,
               "column": 91
             },
             "end": {
-              "line": 52,
+              "line": 53,
               "column": 129
             }
           },
@@ -770,11 +770,11 @@
           "replacement": "tile.Row + 1",
           "location": {
             "start": {
-              "line": 53,
+              "line": 54,
               "column": 27
             },
             "end": {
-              "line": 53,
+              "line": 54,
               "column": 39
             }
           },
@@ -786,11 +786,11 @@
           "replacement": "tile.Column + 1",
           "location": {
             "start": {
-              "line": 53,
+              "line": 54,
               "column": 41
             },
             "end": {
-              "line": 53,
+              "line": 54,
               "column": 56
             }
           },
@@ -802,11 +802,11 @@
           "replacement": "i--",
           "location": {
             "start": {
-              "line": 59,
+              "line": 60,
               "column": 51
             },
             "end": {
-              "line": 59,
+              "line": 60,
               "column": 54
             }
           },
@@ -818,11 +818,11 @@
           "replacement": "i > tileArray.Length",
           "location": {
             "start": {
-              "line": 59,
+              "line": 60,
               "column": 29
             },
             "end": {
-              "line": 59,
+              "line": 60,
               "column": 49
             }
           },
@@ -834,11 +834,11 @@
           "replacement": "i <" + "= tileArray.Length",
           "location": {
             "start": {
-              "line": 59,
+              "line": 60,
               "column": 29
             },
             "end": {
-              "line": 59,
+              "line": 60,
               "column": 49
             }
           },
@@ -850,11 +850,11 @@
           "replacement": "j--",
           "location": {
             "start": {
-              "line": 61,
+              "line": 62,
               "column": 58
             },
             "end": {
-              "line": 61,
+              "line": 62,
               "column": 61
             }
           },
@@ -866,11 +866,11 @@
           "replacement": "j > tileArray[i].Length",
           "location": {
             "start": {
-              "line": 61,
+              "line": 62,
               "column": 33
             },
             "end": {
-              "line": 61,
+              "line": 62,
               "column": 56
             }
           },
@@ -882,11 +882,11 @@
           "replacement": "j <" + "= tileArray[i].Length",
           "location": {
             "start": {
-              "line": 61,
+              "line": 62,
               "column": 33
             },
             "end": {
-              "line": 61,
+              "line": 62,
               "column": 56
             }
           },
@@ -898,11 +898,11 @@
           "replacement": "tile != null",
           "location": {
             "start": {
-              "line": 64,
+              "line": 65,
               "column": 25
             },
             "end": {
-              "line": 64,
+              "line": 65,
               "column": 37
             }
           },
@@ -914,11 +914,11 @@
           "replacement": "(j > 0 && tileArray[i][j - 1] != null) && (j <" + " tileArray[i].Length - 1 && tileArray[i][j + 1] != null)",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 62
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 164
             }
           },
@@ -930,11 +930,11 @@
           "replacement": "j > 0 || tileArray[i][j - 1] != null",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 63
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 99
             }
           },
@@ -946,11 +946,11 @@
           "replacement": "j <" + " 0 ",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 63
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 68
             }
           },
@@ -962,11 +962,11 @@
           "replacement": "j >= 0 ",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 63
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 68
             }
           },
@@ -978,11 +978,11 @@
           "replacement": "tileArray[i][j - 1] == null",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 72
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 99
             }
           },
@@ -994,11 +994,11 @@
           "replacement": "j + 1",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 85
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 90
             }
           },
@@ -1010,11 +1010,11 @@
           "replacement": "j <" + " tileArray[i].Length - 1 || tileArray[i][j + 1] != null",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 105
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 163
             }
           },
@@ -1026,11 +1026,11 @@
           "replacement": "j > tileArray[i].Length - 1 ",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 105
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 132
             }
           },
@@ -1042,11 +1042,11 @@
           "replacement": "j <" + "= tileArray[i].Length - 1 ",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 105
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 132
             }
           },
@@ -1058,11 +1058,11 @@
           "replacement": "tileArray[i].Length + 1 ",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 109
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 132
             }
           },
@@ -1074,11 +1074,11 @@
           "replacement": "tileArray[i][j + 1] == null",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 136
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 163
             }
           },
@@ -1090,11 +1090,11 @@
           "replacement": "j - 1",
           "location": {
             "start": {
-              "line": 65,
+              "line": 66,
               "column": 149
             },
             "end": {
-              "line": 65,
+              "line": 66,
               "column": 154
             }
           },
@@ -1106,11 +1106,11 @@
           "replacement": "(i > 0 && tileArray[i - 1][j] != null) && (i <" + " tileArray.Length - 1 && tileArray[i + 1][j] != null)",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 60
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 159
             }
           },
@@ -1122,11 +1122,11 @@
           "replacement": "i > 0 || tileArray[i - 1][j] != null",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 61
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 97
             }
           },
@@ -1138,11 +1138,11 @@
           "replacement": "i <" + " 0 ",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 61
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 66
             }
           },
@@ -1154,11 +1154,11 @@
           "replacement": "i >= 0 ",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 61
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 66
             }
           },
@@ -1170,11 +1170,11 @@
           "replacement": "tileArray[i - 1][j] == null",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 70
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 97
             }
           },
@@ -1186,11 +1186,11 @@
           "replacement": "i + 1",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 80
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 85
             }
           },
@@ -1202,11 +1202,11 @@
           "replacement": "i <" + " tileArray.Length - 1 || tileArray[i + 1][j] != null",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 103
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 158
             }
           },
@@ -1218,11 +1218,11 @@
           "replacement": "i > tileArray.Length - 1 ",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 103
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 127
             }
           },
@@ -1234,11 +1234,11 @@
           "replacement": "i <" + "= tileArray.Length - 1 ",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 103
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 127
             }
           },
@@ -1250,11 +1250,11 @@
           "replacement": "tileArray.Length + 1 ",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 107
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 127
             }
           },
@@ -1266,11 +1266,11 @@
           "replacement": "tileArray[i + 1][j] == null",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 131
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 158
             }
           },
@@ -1282,11 +1282,11 @@
           "replacement": "i - 1",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 141
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 146
             }
           },
@@ -1298,11 +1298,11 @@
           "replacement": "!tileIsHorizontallyConnectedToTile || !tileIsVerticallyConnectedToTile",
           "location": {
             "start": {
-              "line": 67,
+              "line": 68,
               "column": 25
             },
             "end": {
-              "line": 67,
+              "line": 68,
               "column": 95
             }
           },
@@ -1314,11 +1314,11 @@
           "replacement": "!(!tileIsHorizontallyConnectedToTile && !tileIsVerticallyConnectedToTile)",
           "location": {
             "start": {
-              "line": 67,
+              "line": 68,
               "column": 25
             },
             "end": {
-              "line": 67,
+              "line": 68,
               "column": 95
             }
           },
@@ -1330,11 +1330,11 @@
           "replacement": "tileIsHorizontallyConnectedToTile ",
           "location": {
             "start": {
-              "line": 67,
+              "line": 68,
               "column": 25
             },
             "end": {
-              "line": 67,
+              "line": 68,
               "column": 59
             }
           },
@@ -1346,11 +1346,11 @@
           "replacement": "tileIsVerticallyConnectedToTile",
           "location": {
             "start": {
-              "line": 67,
+              "line": 68,
               "column": 63
             },
             "end": {
-              "line": 67,
+              "line": 68,
               "column": 95
             }
           },
@@ -1362,17 +1362,22 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 67,
+              "line": 68,
               "column": 117
             },
             "end": {
-              "line": 67,
+              "line": 68,
               "column": 192
             }
           },
           "status": "Killed"
         }
       ]
+    },
+    "GameObjects\\Interfaces\\IBoardTileArrayCreator.cs": {
+      "language": "cs",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing System.Collections.Generic;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Interfaces\r\n{\r\n    public interface IBoardTileArrayCreator\r\n    {\r\n        BoardTileDto[][] GetBoardTileArray(IEnumerable<" + "BoardTileDto> tiles);\r\n    }\r\n}",
+      "mutants": []
     }
   }
 };
