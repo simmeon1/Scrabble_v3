@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Scrabble_v3_ClassLibrary.DataObjects;
-using Scrabble_v3_ClassLibrary.GameObjects;
+using Scrabble_v3_ClassLibrary.GameObjects.Implementations;
 using Scrabble_v3_Tests.UnitTests.Helpers;
 using System;
 using System.Collections.Generic;

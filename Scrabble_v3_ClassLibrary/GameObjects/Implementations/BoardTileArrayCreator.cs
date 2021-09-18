@@ -1,10 +1,11 @@
 ﻿using Scrabble_v3_ClassLibrary.DataObjects;
+using Scrabble_v3_ClassLibrary.GameObjects.Interfaces;
 using System;
 using System.Collections.Generic;
 
-namespace Scrabble_v3_ClassLibrary.GameObjects
+namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 {
-    public class BoardTileArrayCreator
+    public class BoardTileArrayCreator: IBoardTileArrayCreator
     {
         public const string ROWS_MUST_BE_MORE_THAN_0 = "Rows must be more than 0";
         public const string COLUMNS_MUST_BE_MORE_THAN_0 = "Columns must be more than 0";
