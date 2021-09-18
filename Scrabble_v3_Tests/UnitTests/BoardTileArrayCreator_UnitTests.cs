@@ -73,8 +73,10 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void TwoTilesThrowsExceptionForNoConnections()
         {
-            BoardTileDto tile = CreateTile(2, 2, true);
-            AssertExceptionWithMessageIsThrown(() => organiser.GetOrganisedTiles(new List<BoardTileDto>() { tile, CreateTile(3, 3) }), $"Tile {tile} is not horizontally or vertically connected to another tile.");
+            BoardTileDto tile = CreateTile(1, 1, true);
+            AssertExceptionWithMessageIsThrown(
+                () => organiser.GetOrganisedTiles(new List<BoardTileDto>() { tile, CreateTile(3, 3) }),
+                $"Tile {tile} is not horizontally or vertically connected to another tile.");
         }
         
         [TestMethod]

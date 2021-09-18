@@ -30,8 +30,8 @@ namespace Scrabble_v3_ClassLibrary.GameObjects
                 if (tile.Column < 0) throw new Exception($"Tile {tile} has a column index below 0.");
 
                 if (tile.IsStart) countOfStartTiles++;
-                if (tile.Row > highestRow) highestRow = tile.Row;
-                if (tile.Column > highestColumn) highestColumn = tile.Column;
+                highestRow = Math.Max(highestRow, tile.Row);
+                highestColumn = Math.Max(highestColumn, tile.Column);
             }
 
             if (countOfStartTiles != 1) throw new Exception(COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);

@@ -25,7 +25,7 @@ namespace Scrabble_v3_ClassLibrary.DataObjects
 
         public override string ToString()
         {
-            return $"Id = {Id}, Row = {Row}, Column = {Column}, IsStart = {IsStart}";
+            return $"Id = {Id}, BoardId = {BoardId}, Row = {Row}, Column = {Column}, IsStart = {IsStart}";
         }
     }
 }
