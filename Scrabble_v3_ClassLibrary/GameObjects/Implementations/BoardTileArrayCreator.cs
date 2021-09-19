@@ -7,8 +7,6 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 {
     public class BoardTileArrayCreator: IBoardTileArrayCreator
     {
-        public const string ROWS_MUST_BE_MORE_THAN_0 = "Rows must be more than 0";
-        public const string COLUMNS_MUST_BE_MORE_THAN_0 = "Columns must be more than 0";
         public const string COUNT_OF_START_TILES_MUST_BE_EXACTLY_1 = "Count of start tiles must be exactly 1.";
         public const string TILE_IS_NULL = "Tile is null.";
 
@@ -29,18 +27,12 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             foreach (BoardTileDto tile in tiles)
             {
                 if (tile == null) throw new Exception(TILE_IS_NULL);
-                if (tile.Row < 0) throw new Exception($"Tile {tile} has a row index below 0.");
-                if (tile.Column < 0) throw new Exception($"Tile {tile} has a column index below 0.");
-
                 if (tile.IsStart) countOfStartTiles++;
                 highestRow = Math.Max(highestRow, tile.Row);
                 highestColumn = Math.Max(highestColumn, tile.Column);
             }
 
             if (countOfStartTiles != 1) throw new Exception(COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);
-            if (highestRow == 0) throw new Exception(ROWS_MUST_BE_MORE_THAN_0);
-            if (highestColumn == 0) throw new Exception(COLUMNS_MUST_BE_MORE_THAN_0);
-
             BoardTileDto[][] organisedTiles = new BoardTileDto[highestRow][];
             for (int i = 0; i < organisedTiles.Length; i++) organisedTiles[i] = new BoardTileDto[highestColumn];
             return organisedTiles;

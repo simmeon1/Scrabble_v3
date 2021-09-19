@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace Scrabble_v3_Tests.UnitTests
+namespace Scrabble_v3_Tests.UnitTests.Helpers
 {
-    class ExceptionAsserter
+    public static class ExceptionAsserter
     {
         public static void AssertExceptionWithMessageIsThrown(Action actionWithException, string message)
         {

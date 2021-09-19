@@ -3,6 +3,7 @@ using Moq;
 using Scrabble_v3_ClassLibrary.DataObjects;
 using Scrabble_v3_ClassLibrary.GameObjects.Implementations;
 using Scrabble_v3_ClassLibrary.GameObjects.Interfaces;
+using Scrabble_v3_Tests.UnitTests.Helpers;
 using System;
 using System.Collections.Generic;
 
@@ -24,7 +25,7 @@ namespace Scrabble_v3_Tests.UnitTests
         {
 
             Board board = GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { new BoardTileDto { Letter = "A" }, new BoardTileDto { Letter = "B" } }
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A"), BoardTileDtoCreator.CreateTileWithLetter("B") }
             });
             Assert.IsTrue(board.ToString().Equals("[A][B]"));
         }
@@ -33,7 +34,7 @@ namespace Scrabble_v3_Tests.UnitTests
         public void ToStringPrintsThreeHorizontalTilesWithLettersCorrectly()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { new BoardTileDto { Letter = "" }, new BoardTileDto { Letter = "B" }, new BoardTileDto { Letter = "C" } }
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter(""), BoardTileDtoCreator.CreateTileWithLetter("B"), BoardTileDtoCreator.CreateTileWithLetter("C") }
             });
             Assert.IsTrue(board.ToString().Equals("[ ][B][C]"));
         }
@@ -42,8 +43,8 @@ namespace Scrabble_v3_Tests.UnitTests
         public void ToStringPrintsTwoVerticalTilesWithLettersCorrectly()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { new BoardTileDto { Letter = "A" } },
-                new BoardTileDto[] { new BoardTileDto { Letter = "B" } }
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A") },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("B") }
             });
             Assert.IsTrue(board.ToString().Equals($"[A]{Environment.NewLine}[B]"));
         }
@@ -53,7 +54,7 @@ namespace Scrabble_v3_Tests.UnitTests
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { null, null },
-                new BoardTileDto[] { new BoardTileDto { Letter = "A" }, new BoardTileDto { Letter = "B" } }
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A"), BoardTileDtoCreator.CreateTileWithLetter("B") }
             });
             Assert.IsTrue(board.ToString().Equals($"[~][~]{Environment.NewLine}[A][B]"));
         }
@@ -61,14 +62,14 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetTileGetsCorrectTileFromBoardWithMultipleRows()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 } }, new BoardTileDto[] { new BoardTileDto { Id = 2 } } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1) }, new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(2) } });
             Assert.IsTrue(board.GetTile(2, 1).Id == 2);
         }
         
         [TestMethod]
         public void GetTileGetsCorrectTileFromBoardWithMultipleColumns()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto { Id = 1 }, new BoardTileDto { Id = 2 } } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1), BoardTileDtoCreator.CreateTileWithId(2) } });
             Assert.IsTrue(board.GetTile(1, 2).Id == 2);
         }
         
@@ -82,28 +83,28 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetTileThrowsExceptionForRowBelowZero()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(-1, 1), "Row -1 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForRowAboveTheLast()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() }, new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() }, new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(3, 1), "Row 3 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForColumnBelowZero()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(1, -1), $"Column -1 is not valid.");
         }
         
         [TestMethod]
         public void GetTileThrowsExceptionForColumnAboveTheLast()
         {
-            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { new BoardTileDto(), new BoardTileDto() } });
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTile() } });
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.GetTile(1, 3), $"Column 3 is not valid.");
         }
 
@@ -114,7 +115,7 @@ namespace Scrabble_v3_Tests.UnitTests
         //    board.PlaceLetter(1, 1, "A", 5);
         //    Assert.IsTrue(board.GetTile(1,1));
         //}
-
+        
         private Board GetBoardWithTiles(BoardTileDto[][] tiles)
         {
             tileArrayCreator.Setup(x => x.GetBoardTileArray(It.IsAny<IEnumerable<BoardTileDto>>())).Returns(tiles);
