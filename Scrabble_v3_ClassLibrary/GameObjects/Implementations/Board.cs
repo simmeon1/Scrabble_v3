@@ -36,7 +36,7 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 
         public void PlaceLetter(int row, int column, string letter, int score)
         {
-            BoardTileDto tile = GetTileIfItIsInPlay(row, column);
+            BoardTileDto tile = GetTile(row, column);
             Validators.ValidateLetter(letter);
             Validators.ValidateScore(score);
             if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);
@@ -45,11 +45,6 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
         }
 
         public BoardTileDto GetTile(int row, int column)
-        {
-            return GetTileIfItIsInPlay(row, column);
-        }
-
-        private BoardTileDto GetTileIfItIsInPlay(int row, int column)
         {
             int actualRowIndex = row - 1;
             int actualColumnIndex = column - 1;
