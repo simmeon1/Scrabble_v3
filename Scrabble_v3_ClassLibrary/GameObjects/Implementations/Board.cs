@@ -8,10 +8,13 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 {
     public class Board
     {
+        public const string LETTER_IS_NOT_VALID = "Letter is not valid.";
         private BoardTileDto[][] Tiles { get; set; }
-        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<BoardTileDto> tiles)
+        private ILetterRepository LetterRepository { get; set; }
+        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<BoardTileDto> tiles, ILetterRepository letterRepository)
         {
             Tiles = tileArrayCreator.GetBoardTileArray(tiles);
+            LetterRepository = letterRepository;
         }
 
         public override string ToString()
@@ -31,10 +34,15 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             return sb.ToString();
         }
 
-        //public void PlaceLetter(int row, int column, string letter, int score)
-        //{
-        //    BoardTileDto tile = GetTileIfItIsInPlay(row, column);
-        //}
+        public void PlaceLetter(int row, int column, string letter, int score)
+        {
+            BoardTileDto tile = GetTileIfItIsInPlay(row, column);
+            Validators.ValidateLetter(letter);
+            Validators.ValidateScore(score);
+            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);
+            tile.Letter = letter;
+            tile.Score = score;
+        }
 
         public BoardTileDto GetTile(int row, int column)
         {
@@ -48,8 +56,7 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) throw new Exception($"Row {row} is not valid.");
             if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($"Column {column} is not valid.");
             BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
-            if (tile == null) throw new Exception($"Tile at row {row}, column {column} is not in play.");
-            return tile;
+            return tile ?? throw new Exception($"Tile at row {row}, column {column} is not in play.");
         }
     }
 }
