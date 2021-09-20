@@ -420,7 +420,7 @@
     },
     "GameObjects\\Implementations\\Board.cs": {
       "language": "cs",
-      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class Board\r\n    {\r\n        public const string LETTER_IS_NOT_VALID = \"Letter is not valid.\";\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        private ILetterRepository LetterRepository { get; set; }\r\n        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<" + "BoardTileDto> tiles, ILetterRepository letterRepository)\r\n        {\r\n            Tiles = tileArrayCreator.GetBoardTileArray(tiles);\r\n            LetterRepository = letterRepository;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n\r\n        public void PlaceLetter(int row, int column, string letter, int score)\r\n        {\r\n            BoardTileDto tile = GetTileIfItIsInPlay(row, column);\r\n            Validators.ValidateLetter(letter);\r\n            Validators.ValidateScore(score);\r\n            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);\r\n            tile.Letter = letter;\r\n            tile.Score = score;\r\n        }\r\n\r\n        public BoardTileDto GetTile(int row, int column)\r\n        {\r\n            return GetTileIfItIsInPlay(row, column);\r\n        }\r\n\r\n        private BoardTileDto GetTileIfItIsInPlay(int row, int column)\r\n        {\r\n            int actualRowIndex = row - 1;\r\n            int actualColumnIndex = column - 1;\r\n            if (actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length) throw new Exception($\"Row {row} is not valid.\");\r\n            if (actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($\"Column {column} is not valid.\");\r\n            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];\r\n            return tile ?? throw new Exception($\"Tile at row {row}, column {column} is not in play.\");\r\n        }\r\n    }\r\n}\r\n",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class Board\r\n    {\r\n        public const string LETTER_IS_NOT_VALID = \"Letter is not valid.\";\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        private ILetterRepository LetterRepository { get; set; }\r\n        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<" + "BoardTileDto> tiles, ILetterRepository letterRepository)\r\n        {\r\n            Tiles = tileArrayCreator.GetBoardTileArray(tiles);\r\n            LetterRepository = letterRepository;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n\r\n        public void PlaceLetter(int row, int column, string letter, int score)\r\n        {\r\n            BoardTileDto tile = GetTile(row, column);\r\n            Validators.ValidateLetter(letter);\r\n            Validators.ValidateScore(score);\r\n            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);\r\n            tile.Letter = letter;\r\n            tile.Score = score;\r\n        }\r\n\r\n        public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)\r\n        {\r\n            try\r\n            {\r\n                int actualRowIndex = row - 1;\r\n                int actualColumnIndex = column - 1;\r\n                if (actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length) throw new Exception($\"Row {row} is not valid.\");\r\n                if (actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($\"Column {column} is not valid.\");\r\n                BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];\r\n                return tile ?? throw new Exception($\"Tile at row {row}, column {column} is not in play.\");\r\n            }\r\n            catch (Exception)\r\n            {\r\n                if (returnNullOnException) return null;\r\n                throw;\r\n            }\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
           "id": "13",
@@ -604,12 +604,12 @@
           "replacement": "row + 1",
           "location": {
             "start": {
-              "line": 54,
-              "column": 34
+              "line": 51,
+              "column": 38
             },
             "end": {
-              "line": 54,
-              "column": 41
+              "line": 51,
+              "column": 45
             }
           },
           "status": "Killed"
@@ -620,12 +620,12 @@
           "replacement": "column + 1",
           "location": {
             "start": {
-              "line": 55,
-              "column": 37
+              "line": 52,
+              "column": 41
             },
             "end": {
-              "line": 55,
-              "column": 47
+              "line": 52,
+              "column": 51
             }
           },
           "status": "Killed"
@@ -636,12 +636,12 @@
           "replacement": "actualRowIndex <" + " 0 && actualRowIndex >= Tiles.Length",
           "location": {
             "start": {
-              "line": 56,
-              "column": 17
+              "line": 53,
+              "column": 21
             },
             "end": {
-              "line": 56,
-              "column": 69
+              "line": 53,
+              "column": 73
             }
           },
           "status": "Killed"
@@ -652,12 +652,12 @@
           "replacement": "!(actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length)",
           "location": {
             "start": {
-              "line": 56,
-              "column": 17
+              "line": 53,
+              "column": 21
             },
             "end": {
-              "line": 56,
-              "column": 69
+              "line": 53,
+              "column": 73
             }
           },
           "status": "Killed"
@@ -668,12 +668,12 @@
           "replacement": "actualRowIndex > 0 ",
           "location": {
             "start": {
-              "line": 56,
-              "column": 17
+              "line": 53,
+              "column": 21
             },
             "end": {
-              "line": 56,
-              "column": 35
+              "line": 53,
+              "column": 39
             }
           },
           "status": "Killed"
@@ -684,12 +684,12 @@
           "replacement": "actualRowIndex <" + "= 0 ",
           "location": {
             "start": {
-              "line": 56,
-              "column": 17
+              "line": 53,
+              "column": 21
             },
             "end": {
-              "line": 56,
-              "column": 35
+              "line": 53,
+              "column": 39
             }
           },
           "status": "Killed"
@@ -700,12 +700,12 @@
           "replacement": "actualRowIndex <" + " Tiles.Length",
           "location": {
             "start": {
-              "line": 56,
-              "column": 39
+              "line": 53,
+              "column": 43
             },
             "end": {
-              "line": 56,
-              "column": 69
+              "line": 53,
+              "column": 73
             }
           },
           "status": "Killed"
@@ -716,12 +716,12 @@
           "replacement": "actualRowIndex > Tiles.Length",
           "location": {
             "start": {
-              "line": 56,
-              "column": 39
+              "line": 53,
+              "column": 43
             },
             "end": {
-              "line": 56,
-              "column": 69
+              "line": 53,
+              "column": 73
             }
           },
           "status": "Killed"
@@ -732,12 +732,12 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 56,
-              "column": 91
+              "line": 53,
+              "column": 95
             },
             "end": {
-              "line": 56,
-              "column": 117
+              "line": 53,
+              "column": 121
             }
           },
           "status": "Killed"
@@ -748,12 +748,12 @@
           "replacement": "actualColumnIndex <" + " 0 && actualColumnIndex >= Tiles[0].Length",
           "location": {
             "start": {
-              "line": 57,
-              "column": 17
+              "line": 54,
+              "column": 21
             },
             "end": {
-              "line": 57,
-              "column": 78
+              "line": 54,
+              "column": 82
             }
           },
           "status": "Killed"
@@ -764,12 +764,12 @@
           "replacement": "!(actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length)",
           "location": {
             "start": {
-              "line": 57,
-              "column": 17
+              "line": 54,
+              "column": 21
             },
             "end": {
-              "line": 57,
-              "column": 78
+              "line": 54,
+              "column": 82
             }
           },
           "status": "Killed"
@@ -780,12 +780,12 @@
           "replacement": "actualColumnIndex > 0 ",
           "location": {
             "start": {
-              "line": 57,
-              "column": 17
+              "line": 54,
+              "column": 21
             },
             "end": {
-              "line": 57,
-              "column": 38
+              "line": 54,
+              "column": 42
             }
           },
           "status": "Killed"
@@ -796,12 +796,12 @@
           "replacement": "actualColumnIndex <" + "= 0 ",
           "location": {
             "start": {
-              "line": 57,
-              "column": 17
+              "line": 54,
+              "column": 21
             },
             "end": {
-              "line": 57,
-              "column": 38
+              "line": 54,
+              "column": 42
             }
           },
           "status": "Killed"
@@ -812,12 +812,12 @@
           "replacement": "actualColumnIndex <" + " Tiles[0].Length",
           "location": {
             "start": {
-              "line": 57,
-              "column": 42
+              "line": 54,
+              "column": 46
             },
             "end": {
-              "line": 57,
-              "column": 78
+              "line": 54,
+              "column": 82
             }
           },
           "status": "Killed"
@@ -828,12 +828,12 @@
           "replacement": "actualColumnIndex > Tiles[0].Length",
           "location": {
             "start": {
-              "line": 57,
-              "column": 42
+              "line": 54,
+              "column": 46
             },
             "end": {
-              "line": 57,
-              "column": 78
+              "line": 54,
+              "column": 82
             }
           },
           "status": "Killed"
@@ -844,12 +844,12 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 57,
-              "column": 100
+              "line": 54,
+              "column": 104
             },
             "end": {
-              "line": 57,
-              "column": 132
+              "line": 54,
+              "column": 136
             }
           },
           "status": "Killed"
@@ -860,12 +860,28 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 59,
-              "column": 48
+              "line": 56,
+              "column": 52
             },
             "end": {
-              "line": 59,
-              "column": 101
+              "line": 56,
+              "column": 105
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "41",
+          "mutatorName": "Negate expression",
+          "replacement": "!(returnNullOnException)",
+          "location": {
+            "start": {
+              "line": 60,
+              "column": 21
+            },
+            "end": {
+              "line": 60,
+              "column": 42
             }
           },
           "status": "Killed"
@@ -877,7 +893,7 @@
       "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class BoardTileArrayCreator: IBoardTileArrayCreator\r\n    {\r\n        public const string COUNT_OF_START_TILES_MUST_BE_EXACTLY_1 = \"Count of start tiles must be exactly 1.\";\r\n        public const string TILE_IS_NULL = \"Tile is null.\";\r\n\r\n        public BoardTileDto[][] GetBoardTileArray(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            BoardTileDto[][] tileArray = InitializeTileArrayFromTiles(tiles);\r\n            PopulateTileArrayWithTiles(tileArray, tiles);\r\n            CheckIfTileArrayContainsUnconnectedTiles(tileArray);\r\n            return tileArray;\r\n        }\r\n\r\n        private static BoardTileDto[][] InitializeTileArrayFromTiles(IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            int highestRow = 0;\r\n            int highestColumn = 0;\r\n            int countOfStartTiles = 0;\r\n\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tile == null) throw new Exception(TILE_IS_NULL);\r\n                if (tile.IsStart) countOfStartTiles++;\r\n                highestRow = Math.Max(highestRow, tile.Row);\r\n                highestColumn = Math.Max(highestColumn, tile.Column);\r\n            }\r\n\r\n            if (countOfStartTiles != 1) throw new Exception(COUNT_OF_START_TILES_MUST_BE_EXACTLY_1);\r\n            BoardTileDto[][] organisedTiles = new BoardTileDto[highestRow][];\r\n            for (int i = 0; i <" + " organisedTiles.Length; i++) organisedTiles[i] = new BoardTileDto[highestColumn];\r\n            return organisedTiles;\r\n        }\r\n\r\n        private static void PopulateTileArrayWithTiles(BoardTileDto[][] tileArray, IEnumerable<" + "BoardTileDto> tiles)\r\n        {\r\n            foreach (BoardTileDto tile in tiles)\r\n            {\r\n                if (tileArray[tile.Row - 1][tile.Column - 1] != null) throw new Exception($\"Tile {tile} is already initialized.\");\r\n                tileArray[tile.Row - 1][tile.Column - 1] = tile;\r\n            }\r\n        }\r\n\r\n        private static void CheckIfTileArrayContainsUnconnectedTiles(BoardTileDto[][] tileArray)\r\n        {\r\n            for (int i = 0; i <" + " tileArray.Length; i++)\r\n            {\r\n                for (int j = 0; j <" + " tileArray[i].Length; j++)\r\n                {\r\n                    BoardTileDto tile = tileArray[i][j];\r\n                    if (tile == null) continue;\r\n                    bool tileIsHorizontallyConnectedToTile = (j > 0 && tileArray[i][j - 1] != null) || (j <" + " tileArray[i].Length - 1 && tileArray[i][j + 1] != null);\r\n                    bool tileIsVerticallyConnectedToTile = (i > 0 && tileArray[i - 1][j] != null) || (i <" + " tileArray.Length - 1 && tileArray[i + 1][j] != null);\r\n                    if (!tileIsHorizontallyConnectedToTile && !tileIsVerticallyConnectedToTile) throw new Exception($\"Tile {tile} is not horizontally or vertically connected to another tile.\");\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
-          "id": "41",
+          "id": "42",
           "mutatorName": "Equality mutation",
           "replacement": "tile != null",
           "location": {
@@ -893,7 +909,7 @@
           "status": "Killed"
         },
         {
-          "id": "42",
+          "id": "43",
           "mutatorName": "Negate expression",
           "replacement": "!(tile.IsStart)",
           "location": {
@@ -909,7 +925,7 @@
           "status": "Killed"
         },
         {
-          "id": "43",
+          "id": "44",
           "mutatorName": "PostIncrementExpression to PostDecrementExpression mutation",
           "replacement": "countOfStartTiles--",
           "location": {
@@ -925,7 +941,7 @@
           "status": "Killed"
         },
         {
-          "id": "44",
+          "id": "45",
           "mutatorName": "Linq method mutation (Max() to Min())",
           "replacement": "Math.Min(highestRow, tile.Row)",
           "location": {
@@ -941,7 +957,7 @@
           "status": "Killed"
         },
         {
-          "id": "45",
+          "id": "46",
           "mutatorName": "Linq method mutation (Max() to Min())",
           "replacement": "Math.Min(highestColumn, tile.Column)",
           "location": {
@@ -957,7 +973,7 @@
           "status": "Killed"
         },
         {
-          "id": "46",
+          "id": "47",
           "mutatorName": "Equality mutation",
           "replacement": "countOfStartTiles == 1",
           "location": {
@@ -973,7 +989,7 @@
           "status": "Killed"
         },
         {
-          "id": "47",
+          "id": "48",
           "mutatorName": "PostIncrementExpression to PostDecrementExpression mutation",
           "replacement": "i--",
           "location": {
@@ -989,7 +1005,7 @@
           "status": "Killed"
         },
         {
-          "id": "48",
+          "id": "49",
           "mutatorName": "Equality mutation",
           "replacement": "i > organisedTiles.Length",
           "location": {
@@ -1005,7 +1021,7 @@
           "status": "Killed"
         },
         {
-          "id": "49",
+          "id": "50",
           "mutatorName": "Equality mutation",
           "replacement": "i <" + "= organisedTiles.Length",
           "location": {
@@ -1021,7 +1037,7 @@
           "status": "Killed"
         },
         {
-          "id": "50",
+          "id": "51",
           "mutatorName": "Equality mutation",
           "replacement": "tileArray[tile.Row - 1][tile.Column - 1] == null",
           "location": {
@@ -1037,7 +1053,7 @@
           "status": "Killed"
         },
         {
-          "id": "51",
+          "id": "52",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tile.Row + 1",
           "location": {
@@ -1053,7 +1069,7 @@
           "status": "Killed"
         },
         {
-          "id": "52",
+          "id": "53",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tile.Column + 1",
           "location": {
@@ -1069,7 +1085,7 @@
           "status": "Killed"
         },
         {
-          "id": "53",
+          "id": "54",
           "mutatorName": "String mutation",
           "replacement": "$\"\"",
           "location": {
@@ -1085,7 +1101,7 @@
           "status": "Killed"
         },
         {
-          "id": "54",
+          "id": "55",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tile.Row + 1",
           "location": {
@@ -1101,7 +1117,7 @@
           "status": "Killed"
         },
         {
-          "id": "55",
+          "id": "56",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tile.Column + 1",
           "location": {
@@ -1117,7 +1133,7 @@
           "status": "Killed"
         },
         {
-          "id": "56",
+          "id": "57",
           "mutatorName": "PostIncrementExpression to PostDecrementExpression mutation",
           "replacement": "i--",
           "location": {
@@ -1133,7 +1149,7 @@
           "status": "Killed"
         },
         {
-          "id": "57",
+          "id": "58",
           "mutatorName": "Equality mutation",
           "replacement": "i > tileArray.Length",
           "location": {
@@ -1149,7 +1165,7 @@
           "status": "Killed"
         },
         {
-          "id": "58",
+          "id": "59",
           "mutatorName": "Equality mutation",
           "replacement": "i <" + "= tileArray.Length",
           "location": {
@@ -1165,7 +1181,7 @@
           "status": "Killed"
         },
         {
-          "id": "59",
+          "id": "60",
           "mutatorName": "PostIncrementExpression to PostDecrementExpression mutation",
           "replacement": "j--",
           "location": {
@@ -1181,7 +1197,7 @@
           "status": "Killed"
         },
         {
-          "id": "60",
+          "id": "61",
           "mutatorName": "Equality mutation",
           "replacement": "j > tileArray[i].Length",
           "location": {
@@ -1197,7 +1213,7 @@
           "status": "Killed"
         },
         {
-          "id": "61",
+          "id": "62",
           "mutatorName": "Equality mutation",
           "replacement": "j <" + "= tileArray[i].Length",
           "location": {
@@ -1213,7 +1229,7 @@
           "status": "Killed"
         },
         {
-          "id": "62",
+          "id": "63",
           "mutatorName": "Equality mutation",
           "replacement": "tile != null",
           "location": {
@@ -1229,7 +1245,7 @@
           "status": "Killed"
         },
         {
-          "id": "63",
+          "id": "64",
           "mutatorName": "Logical mutation",
           "replacement": "(j > 0 && tileArray[i][j - 1] != null) && (j <" + " tileArray[i].Length - 1 && tileArray[i][j + 1] != null)",
           "location": {
@@ -1245,7 +1261,7 @@
           "status": "Killed"
         },
         {
-          "id": "64",
+          "id": "65",
           "mutatorName": "Logical mutation",
           "replacement": "j > 0 || tileArray[i][j - 1] != null",
           "location": {
@@ -1261,7 +1277,7 @@
           "status": "Killed"
         },
         {
-          "id": "65",
+          "id": "66",
           "mutatorName": "Equality mutation",
           "replacement": "j <" + " 0 ",
           "location": {
@@ -1277,7 +1293,7 @@
           "status": "Killed"
         },
         {
-          "id": "66",
+          "id": "67",
           "mutatorName": "Equality mutation",
           "replacement": "j >= 0 ",
           "location": {
@@ -1293,7 +1309,7 @@
           "status": "Killed"
         },
         {
-          "id": "67",
+          "id": "68",
           "mutatorName": "Equality mutation",
           "replacement": "tileArray[i][j - 1] == null",
           "location": {
@@ -1309,7 +1325,7 @@
           "status": "Killed"
         },
         {
-          "id": "68",
+          "id": "69",
           "mutatorName": "Arithmetic mutation",
           "replacement": "j + 1",
           "location": {
@@ -1325,7 +1341,7 @@
           "status": "Killed"
         },
         {
-          "id": "69",
+          "id": "70",
           "mutatorName": "Logical mutation",
           "replacement": "j <" + " tileArray[i].Length - 1 || tileArray[i][j + 1] != null",
           "location": {
@@ -1341,7 +1357,7 @@
           "status": "Killed"
         },
         {
-          "id": "70",
+          "id": "71",
           "mutatorName": "Equality mutation",
           "replacement": "j > tileArray[i].Length - 1 ",
           "location": {
@@ -1357,7 +1373,7 @@
           "status": "Killed"
         },
         {
-          "id": "71",
+          "id": "72",
           "mutatorName": "Equality mutation",
           "replacement": "j <" + "= tileArray[i].Length - 1 ",
           "location": {
@@ -1373,7 +1389,7 @@
           "status": "Killed"
         },
         {
-          "id": "72",
+          "id": "73",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tileArray[i].Length + 1 ",
           "location": {
@@ -1389,7 +1405,7 @@
           "status": "Killed"
         },
         {
-          "id": "73",
+          "id": "74",
           "mutatorName": "Equality mutation",
           "replacement": "tileArray[i][j + 1] == null",
           "location": {
@@ -1405,7 +1421,7 @@
           "status": "Killed"
         },
         {
-          "id": "74",
+          "id": "75",
           "mutatorName": "Arithmetic mutation",
           "replacement": "j - 1",
           "location": {
@@ -1421,7 +1437,7 @@
           "status": "Killed"
         },
         {
-          "id": "75",
+          "id": "76",
           "mutatorName": "Logical mutation",
           "replacement": "(i > 0 && tileArray[i - 1][j] != null) && (i <" + " tileArray.Length - 1 && tileArray[i + 1][j] != null)",
           "location": {
@@ -1437,7 +1453,7 @@
           "status": "Killed"
         },
         {
-          "id": "76",
+          "id": "77",
           "mutatorName": "Logical mutation",
           "replacement": "i > 0 || tileArray[i - 1][j] != null",
           "location": {
@@ -1453,7 +1469,7 @@
           "status": "Killed"
         },
         {
-          "id": "77",
+          "id": "78",
           "mutatorName": "Equality mutation",
           "replacement": "i <" + " 0 ",
           "location": {
@@ -1469,7 +1485,7 @@
           "status": "Killed"
         },
         {
-          "id": "78",
+          "id": "79",
           "mutatorName": "Equality mutation",
           "replacement": "i >= 0 ",
           "location": {
@@ -1485,7 +1501,7 @@
           "status": "Killed"
         },
         {
-          "id": "79",
+          "id": "80",
           "mutatorName": "Equality mutation",
           "replacement": "tileArray[i - 1][j] == null",
           "location": {
@@ -1501,7 +1517,7 @@
           "status": "Killed"
         },
         {
-          "id": "80",
+          "id": "81",
           "mutatorName": "Arithmetic mutation",
           "replacement": "i + 1",
           "location": {
@@ -1517,7 +1533,7 @@
           "status": "Killed"
         },
         {
-          "id": "81",
+          "id": "82",
           "mutatorName": "Logical mutation",
           "replacement": "i <" + " tileArray.Length - 1 || tileArray[i + 1][j] != null",
           "location": {
@@ -1533,7 +1549,7 @@
           "status": "Killed"
         },
         {
-          "id": "82",
+          "id": "83",
           "mutatorName": "Equality mutation",
           "replacement": "i > tileArray.Length - 1 ",
           "location": {
@@ -1549,7 +1565,7 @@
           "status": "Killed"
         },
         {
-          "id": "83",
+          "id": "84",
           "mutatorName": "Equality mutation",
           "replacement": "i <" + "= tileArray.Length - 1 ",
           "location": {
@@ -1565,7 +1581,7 @@
           "status": "Killed"
         },
         {
-          "id": "84",
+          "id": "85",
           "mutatorName": "Arithmetic mutation",
           "replacement": "tileArray.Length + 1 ",
           "location": {
@@ -1581,7 +1597,7 @@
           "status": "Killed"
         },
         {
-          "id": "85",
+          "id": "86",
           "mutatorName": "Equality mutation",
           "replacement": "tileArray[i + 1][j] == null",
           "location": {
@@ -1597,7 +1613,7 @@
           "status": "Killed"
         },
         {
-          "id": "86",
+          "id": "87",
           "mutatorName": "Arithmetic mutation",
           "replacement": "i - 1",
           "location": {
@@ -1613,7 +1629,7 @@
           "status": "Killed"
         },
         {
-          "id": "87",
+          "id": "88",
           "mutatorName": "Logical mutation",
           "replacement": "!tileIsHorizontallyConnectedToTile || !tileIsVerticallyConnectedToTile",
           "location": {
@@ -1629,7 +1645,7 @@
           "status": "Killed"
         },
         {
-          "id": "88",
+          "id": "89",
           "mutatorName": "Negate expression",
           "replacement": "!(!tileIsHorizontallyConnectedToTile && !tileIsVerticallyConnectedToTile)",
           "location": {
@@ -1645,7 +1661,7 @@
           "status": "Killed"
         },
         {
-          "id": "89",
+          "id": "90",
           "mutatorName": "LogicalNotExpression to un-LogicalNotExpression mutation",
           "replacement": "tileIsHorizontallyConnectedToTile ",
           "location": {
@@ -1661,7 +1677,7 @@
           "status": "Killed"
         },
         {
-          "id": "90",
+          "id": "91",
           "mutatorName": "LogicalNotExpression to un-LogicalNotExpression mutation",
           "replacement": "tileIsVerticallyConnectedToTile",
           "location": {
@@ -1677,7 +1693,7 @@
           "status": "Killed"
         },
         {
-          "id": "91",
+          "id": "92",
           "mutatorName": "String mutation",
           "replacement": "$\"\"",
           "location": {
@@ -1709,7 +1725,7 @@
       "source": "using System;\r\n\r\nnamespace Scrabble_v3_ClassLibrary\r\n{\r\n    public static class Validators\r\n    {\r\n        public const string LETTER_IS_NULL = \"Letter is null.\";\r\n        public const string LETTER_MORE_THAN_ONE_CHARACTERS = \"Letter is more than 1 characters.\";\r\n        public const string SCORE_BELOW_ZERO = \"Score is below 0.\";\r\n        public static void ValidateLetter(string letter)\r\n        {\r\n            if (letter == null) throw new Exception(LETTER_IS_NULL);\r\n            if (letter.Length > 1) throw new Exception(LETTER_MORE_THAN_ONE_CHARACTERS);\r\n        }\r\n        \r\n        public static void ValidateScore(int score)\r\n        {\r\n            if (score <" + " 0) throw new Exception(SCORE_BELOW_ZERO);\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
-          "id": "92",
+          "id": "93",
           "mutatorName": "Equality mutation",
           "replacement": "letter != null",
           "location": {
@@ -1725,7 +1741,7 @@
           "status": "Killed"
         },
         {
-          "id": "93",
+          "id": "94",
           "mutatorName": "Equality mutation",
           "replacement": "letter.Length <" + " 1",
           "location": {
@@ -1741,7 +1757,7 @@
           "status": "Killed"
         },
         {
-          "id": "94",
+          "id": "95",
           "mutatorName": "Equality mutation",
           "replacement": "letter.Length >= 1",
           "location": {
@@ -1757,7 +1773,7 @@
           "status": "Killed"
         },
         {
-          "id": "95",
+          "id": "96",
           "mutatorName": "Negate expression",
           "replacement": "!(letter.Length > 1)",
           "location": {
@@ -1773,7 +1789,7 @@
           "status": "Killed"
         },
         {
-          "id": "96",
+          "id": "97",
           "mutatorName": "Equality mutation",
           "replacement": "score > 0",
           "location": {
@@ -1789,7 +1805,7 @@
           "status": "Killed"
         },
         {
-          "id": "97",
+          "id": "98",
           "mutatorName": "Equality mutation",
           "replacement": "score <" + "= 0",
           "location": {
@@ -1805,7 +1821,7 @@
           "status": "Killed"
         },
         {
-          "id": "98",
+          "id": "99",
           "mutatorName": "Negate expression",
           "replacement": "!(score <" + " 0)",
           "location": {

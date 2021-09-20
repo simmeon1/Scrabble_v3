@@ -110,6 +110,53 @@ namespace Scrabble_v3_Tests.UnitTests
         }
 
         [TestMethod]
+        public void GetTileGetsCorrectTileFromBoardWithMultipleRows_ReturnNullOnException()
+        {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1) }, new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(2) } });
+            Assert.IsTrue(board.GetTile(2, 1, returnNullOnException: true).Id == 2);
+        }
+
+        [TestMethod]
+        public void GetTileGetsCorrectTileFromBoardWithMultipleColumns_ReturnNullOnException()
+        {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1), BoardTileDtoCreator.CreateTileWithId(2) } });
+            Assert.IsTrue(board.GetTile(1, 2, returnNullOnException: true).Id == 2);
+        }
+
+        [TestMethod]
+        public void GetTileReturnsNullForNullTile()
+        {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { null } });
+            Assert.IsTrue(board.GetTile(1, 1, returnNullOnException: true) == null);
+        }
+
+        [TestMethod]
+        public void GetTileReturnsNullForRowBelowZero()
+        {
+            Assert.IsTrue(GetBoardWithOneTile().GetTile(-1, 1, returnNullOnException: true) == null);
+        }
+
+        [TestMethod]
+        public void GetTileReturnsNullForRowAboveTheLast()
+        {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() }, new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
+            Assert.IsTrue(board.GetTile(3, 1, returnNullOnException: true) == null);
+        }
+
+        [TestMethod]
+        public void GetTileReturnsNullForColumnBelowZero()
+        {
+            Assert.IsTrue(GetBoardWithOneTile().GetTile(1, -1, returnNullOnException: true) == null);
+        }
+
+        [TestMethod]
+        public void GetTileReturnsNullForColumnAboveTheLast()
+        {
+            Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTile() } });
+            Assert.IsTrue(board.GetTile(1, 3, returnNullOnException: true) == null);
+        }
+
+        [TestMethod]
         public void PlaceLetterPlacesLetterCorrectly()
         {
             letterRepo.Setup(x => x.LetterIsValid(It.IsAny<string>())).Returns(true);

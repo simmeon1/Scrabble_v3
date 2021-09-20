@@ -44,14 +44,22 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             tile.Score = score;
         }
 
-        public BoardTileDto GetTile(int row, int column)
+        public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)
         {
-            int actualRowIndex = row - 1;
-            int actualColumnIndex = column - 1;
-            if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) throw new Exception($"Row {row} is not valid.");
-            if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($"Column {column} is not valid.");
-            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
-            return tile ?? throw new Exception($"Tile at row {row}, column {column} is not in play.");
+            try
+            {
+                int actualRowIndex = row - 1;
+                int actualColumnIndex = column - 1;
+                if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) throw new Exception($"Row {row} is not valid.");
+                if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($"Column {column} is not valid.");
+                BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
+                return tile ?? throw new Exception($"Tile at row {row}, column {column} is not in play.");
+            }
+            catch (Exception)
+            {
+                if (returnNullOnException) return null;
+                throw;
+            }
         }
     }
 }
