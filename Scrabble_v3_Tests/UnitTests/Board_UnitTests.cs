@@ -217,6 +217,94 @@ namespace Scrabble_v3_Tests.UnitTests
             ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardWithOneTile().PlaceLetter(1, 2, "A", 1), "Column 2 is not valid.");
         }
 
+        [TestMethod]
+        public void GetHorizontalWordAtTileOneOneReturnsEmptyString()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 1).Equals(""));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileOneTwoReturnsAB()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 2).Equals("AB"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileOneThreeReturnsAB()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 3).Equals("AB"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileTwoOneReturnsCDE()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 1).Equals("CDE"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileTwoTwoReturnsCDE()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 2).Equals("CDE"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileTwoThreeReturnsCDE()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 3).Equals("CDE"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileThreeOneReturnsFG()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 1).Equals("FG"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileThreeTwoReturnsFG()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 2).Equals("FG"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileThreeThreeThrowsException()
+        {
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 3), "Tile at row 3, column 3 is not in play.");
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileTenTenThrowsException()
+        {
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(10, 10), "Row 10 is not valid.");
+        }
+
+        [TestMethod]
+        public void GetHorizontalWordAtTileFourOneReturnsH()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 1).Equals("H"));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileFourTwoReturnsEmpty()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 2).Equals(""));
+        }
+        
+        [TestMethod]
+        public void GetHorizontalWordAtTileFourThreeReturnsI()
+        {
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 3).Equals("I"));
+        }
+
+        private Board GetBoardForGetHorizontalWordTests()
+        {
+            return GetBoardWithTiles(new BoardTileDto[][] {
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTileWithLetter("A"), BoardTileDtoCreator.CreateTileWithLetter("B") },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("C"), BoardTileDtoCreator.CreateTileWithLetter("D"), BoardTileDtoCreator.CreateTileWithLetter("E") },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("F"), BoardTileDtoCreator.CreateTileWithLetter("G"), null },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("H"), BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTileWithLetter("I") }
+            });
+        }
+
         private Board GetBoardWithOneTile()
         {
             return GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });

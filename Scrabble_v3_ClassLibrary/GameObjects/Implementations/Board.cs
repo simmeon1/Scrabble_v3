@@ -44,22 +44,44 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             tile.Score = score;
         }
 
+        public string GetHorizontalWordAtTile(int row, int column)
+        {
+            StringBuilder sb = new("");
+            BoardTileDto tile = GetTile(row, column);
+            if (tile.Letter.Equals("")) return "";
+
+            sb.Append(tile.Letter);
+
+            int columnTemp = column - 1;
+            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
+            {
+                sb.Insert(0, GetTile(row, columnTemp).Letter);
+                columnTemp--;
+            }
+
+            columnTemp = column + 1;
+            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
+            {
+                sb.Append(GetTile(row, columnTemp).Letter);
+                columnTemp++;
+            }
+            return sb.ToString();
+        }
+
+        private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)
+        {
+            BoardTileDto tile = GetTile(row, columnTemp, returnNullOnException: true);
+            return tile != null && !tile.Letter.Equals("") ? tile : null;
+        }
+
         public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)
         {
-            try
-            {
-                int actualRowIndex = row - 1;
-                int actualColumnIndex = column - 1;
-                if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) throw new Exception($"Row {row} is not valid.");
-                if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) throw new Exception($"Column {column} is not valid.");
-                BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
-                return tile ?? throw new Exception($"Tile at row {row}, column {column} is not in play.");
-            }
-            catch (Exception)
-            {
-                if (returnNullOnException) return null;
-                throw;
-            }
+            int actualRowIndex = row - 1;
+            int actualColumnIndex = column - 1;
+            if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) return returnNullOnException ? null : throw new Exception($"Row {row} is not valid.");
+            if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) return returnNullOnException ? null : throw new Exception($"Column {column} is not valid.");
+            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
+            return tile ?? (returnNullOnException ? null : throw new Exception($"Tile at row {row}, column {column} is not in play."));
         }
     }
 }

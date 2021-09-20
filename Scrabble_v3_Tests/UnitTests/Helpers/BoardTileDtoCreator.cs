@@ -6,7 +6,7 @@ namespace Scrabble_v3_Tests.UnitTests.Helpers
     {
         public static BoardTileDto CreateTile()
         {
-            return new(1, 1, 1, 1, true, "A", 1);
+            return new(1, 1, 1, 1, true, "", 1);
         }
         
         public static BoardTileDto CreateTile(int row, int column, bool isStart = false, int id = 1, string letter = "", int score = 0)
