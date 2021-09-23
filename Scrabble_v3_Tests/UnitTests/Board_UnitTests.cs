@@ -220,49 +220,49 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetHorizontalWordAtTileOneOneReturnsEmptyString()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 1).Equals(""));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 1).ToString().Equals(""));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileOneTwoReturnsAB()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 2).Equals("AB"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 2).ToString().Equals("AB"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileOneThreeReturnsAB()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 3).Equals("AB"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(1, 3).ToString().Equals("AB"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileTwoOneReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 1).Equals("CDE"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 1).ToString().Equals("CDE"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileTwoTwoReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 2).Equals("CDE"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 2).ToString().Equals("CDE"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileTwoThreeReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 3).Equals("CDE"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(2, 3).ToString().Equals("CDE"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileThreeOneReturnsFG()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 1).Equals("FG"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 1).ToString().Equals("FG"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileThreeTwoReturnsFG()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 2).Equals("FG"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(3, 2).ToString().Equals("FG"));
         }
         
         [TestMethod]
@@ -280,19 +280,19 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetHorizontalWordAtTileFourOneReturnsH()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 1).Equals("H"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 1).ToString().Equals("H"));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileFourTwoReturnsEmpty()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 2).Equals(""));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 2).ToString().Equals(""));
         }
         
         [TestMethod]
         public void GetHorizontalWordAtTileFourThreeReturnsI()
         {
-            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 3).Equals("I"));
+            Assert.IsTrue(GetBoardForGetHorizontalWordTests().GetHorizontalWordAtTile(4, 3).ToString().Equals("I"));
         }
 
         private Board GetBoardForGetHorizontalWordTests()

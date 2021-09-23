@@ -44,28 +44,28 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             tile.Score = score;
         }
 
-        public string GetHorizontalWordAtTile(int row, int column)
+        public BoardWord GetHorizontalWordAtTile(int row, int column)
         {
-            StringBuilder sb = new("");
+            List<BoardTileDto> tiles = new();
             BoardTileDto tile = GetTile(row, column);
-            if (tile.Letter.Equals("")) return "";
+            if (tile.Letter.Equals("")) return new BoardWord(tiles);
 
-            sb.Append(tile.Letter);
+            tiles.Add(tile);
 
             int columnTemp = column - 1;
             while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
             {
-                sb.Insert(0, GetTile(row, columnTemp).Letter);
+                tiles.Insert(0, GetTile(row, columnTemp));
                 columnTemp--;
             }
 
             columnTemp = column + 1;
             while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
             {
-                sb.Append(GetTile(row, columnTemp).Letter);
+                tiles.Add(GetTile(row, columnTemp));
                 columnTemp++;
             }
-            return sb.ToString();
+            return new BoardWord(tiles);
         }
 
         private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)
