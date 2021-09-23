@@ -67,6 +67,30 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             }
             return new BoardWord(tiles);
         }
+        
+        public BoardWord GetVerticalWordAtTile(int row, int column)
+        {
+            List<BoardTileDto> tiles = new();
+            BoardTileDto tile = GetTile(row, column);
+            if (tile.Letter.Equals("")) return new BoardWord(tiles);
+
+            tiles.Add(tile);
+
+            int rowTemp = row - 1;
+            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)
+            {
+                tiles.Insert(0, GetTile(rowTemp, column));
+                rowTemp--;
+            }
+
+            rowTemp = row + 1;
+            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)
+            {
+                tiles.Add(GetTile(rowTemp, column));
+                rowTemp++;
+            }
+            return new BoardWord(tiles);
+        }
 
         private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)
         {
