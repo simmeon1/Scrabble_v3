@@ -46,9 +46,10 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 
         public BoardWord GetHorizontalWordAtTile(int row, int column)
         {
+            Direction direction = Direction.Horizontal;
             List<BoardTileDto> tiles = new();
             BoardTileDto tile = GetTile(row, column);
-            if (tile.Letter.Equals("")) return new BoardWord(tiles);
+            if (tile.Letter.Equals("")) return new BoardWord(direction, tiles);
 
             tiles.Add(tile);
 
@@ -65,14 +66,15 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
                 tiles.Add(GetTile(row, columnTemp));
                 columnTemp++;
             }
-            return new BoardWord(tiles);
+            return new BoardWord(direction, tiles);
         }
         
         public BoardWord GetVerticalWordAtTile(int row, int column)
         {
+            Direction direction = Direction.Vertical;
             List<BoardTileDto> tiles = new();
             BoardTileDto tile = GetTile(row, column);
-            if (tile.Letter.Equals("")) return new BoardWord(tiles);
+            if (tile.Letter.Equals("")) return new BoardWord(direction, tiles);
 
             tiles.Add(tile);
 
@@ -89,7 +91,7 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
                 tiles.Add(GetTile(rowTemp, column));
                 rowTemp++;
             }
-            return new BoardWord(tiles);
+            return new BoardWord(direction, tiles);
         }
 
         private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)

@@ -394,11 +394,11 @@ namespace Scrabble_v3_Tests.UnitTests
         private Board GetBoardForGetWordTests()
         {
             return GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTileWithLetter("A"), BoardTileDtoCreator.CreateTileWithLetter("B") },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("C"), BoardTileDtoCreator.CreateTileWithLetter("D"), BoardTileDtoCreator.CreateTileWithLetter("E") },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("F"), BoardTileDtoCreator.CreateTileWithLetter("G"), null },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("H"), BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTileWithLetter("I") },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("J"), BoardTileDtoCreator.CreateTileWithLetter("K"), BoardTileDtoCreator.CreateTile() },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 1, 2), BoardTileDtoCreator.CreateTileWithLetter("B", 1, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("C", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("D", 2, 2), BoardTileDtoCreator.CreateTileWithLetter("E", 2, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("F", 3, 1), BoardTileDtoCreator.CreateTileWithLetter("G", 3, 2), null },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("H", 4, 1), BoardTileDtoCreator.CreateTileWithCoordinates(4, 2), BoardTileDtoCreator.CreateTileWithLetter("I", 4, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("J", 5, 1), BoardTileDtoCreator.CreateTileWithLetter("K", 5, 2), BoardTileDtoCreator.CreateTileWithCoordinates(5, 3) },
             });
         }
 

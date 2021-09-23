@@ -420,7 +420,7 @@
     },
     "GameObjects\\Implementations\\Board.cs": {
       "language": "cs",
-      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class Board\r\n    {\r\n        public const string LETTER_IS_NOT_VALID = \"Letter is not valid.\";\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        private ILetterRepository LetterRepository { get; set; }\r\n        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<" + "BoardTileDto> tiles, ILetterRepository letterRepository)\r\n        {\r\n            Tiles = tileArrayCreator.GetBoardTileArray(tiles);\r\n            LetterRepository = letterRepository;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n\r\n        public void PlaceLetter(int row, int column, string letter, int score)\r\n        {\r\n            BoardTileDto tile = GetTile(row, column);\r\n            Validators.ValidateLetter(letter);\r\n            Validators.ValidateScore(score);\r\n            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);\r\n            tile.Letter = letter;\r\n            tile.Score = score;\r\n        }\r\n\r\n        public BoardWord GetHorizontalWordAtTile(int row, int column)\r\n        {\r\n            List<" + "BoardTileDto> tiles = new();\r\n            BoardTileDto tile = GetTile(row, column);\r\n            if (tile.Letter.Equals(\"\")) return new BoardWord(tiles);\r\n\r\n            tiles.Add(tile);\r\n\r\n            int columnTemp = column - 1;\r\n            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)\r\n            {\r\n                tiles.Insert(0, GetTile(row, columnTemp));\r\n                columnTemp--;\r\n            }\r\n\r\n            columnTemp = column + 1;\r\n            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)\r\n            {\r\n                tiles.Add(GetTile(row, columnTemp));\r\n                columnTemp++;\r\n            }\r\n            return new BoardWord(tiles);\r\n        }\r\n        \r\n        public BoardWord GetVerticalWordAtTile(int row, int column)\r\n        {\r\n            List<" + "BoardTileDto> tiles = new();\r\n            BoardTileDto tile = GetTile(row, column);\r\n            if (tile.Letter.Equals(\"\")) return new BoardWord(tiles);\r\n\r\n            tiles.Add(tile);\r\n\r\n            int rowTemp = row - 1;\r\n            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)\r\n            {\r\n                tiles.Insert(0, GetTile(rowTemp, column));\r\n                rowTemp--;\r\n            }\r\n\r\n            rowTemp = row + 1;\r\n            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)\r\n            {\r\n                tiles.Add(GetTile(rowTemp, column));\r\n                rowTemp++;\r\n            }\r\n            return new BoardWord(tiles);\r\n        }\r\n\r\n        private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)\r\n        {\r\n            BoardTileDto tile = GetTile(row, columnTemp, returnNullOnException: true);\r\n            return tile != null && !tile.Letter.Equals(\"\") ? tile : null;\r\n        }\r\n\r\n        public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)\r\n        {\r\n            int actualRowIndex = row - 1;\r\n            int actualColumnIndex = column - 1;\r\n            if (actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length) return returnNullOnException ? null : throw new Exception($\"Row {row} is not valid.\");\r\n            if (actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length) return returnNullOnException ? null : throw new Exception($\"Column {column} is not valid.\");\r\n            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];\r\n            return tile ?? (returnNullOnException ? null : throw new Exception($\"Tile at row {row}, column {column} is not in play.\"));\r\n        }\r\n    }\r\n}\r\n",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing Scrabble_v3_ClassLibrary.GameObjects.Interfaces;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class Board\r\n    {\r\n        public const string LETTER_IS_NOT_VALID = \"Letter is not valid.\";\r\n        private BoardTileDto[][] Tiles { get; set; }\r\n        private ILetterRepository LetterRepository { get; set; }\r\n        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<" + "BoardTileDto> tiles, ILetterRepository letterRepository)\r\n        {\r\n            Tiles = tileArrayCreator.GetBoardTileArray(tiles);\r\n            LetterRepository = letterRepository;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto[] tileRow in Tiles)\r\n            {\r\n                if (sb.Length > 0) sb.Append(Environment.NewLine);\r\n                foreach (BoardTileDto tile in tileRow)\r\n                {\r\n                    string letter = \" \";\r\n                    if (tile == null) letter = \"~\";\r\n                    else if (!tile.Letter.Equals(\"\")) letter = tile.Letter;\r\n                    sb.Append($\"[{letter}]\");\r\n                }\r\n            }\r\n            return sb.ToString();\r\n        }\r\n\r\n        public void PlaceLetter(int row, int column, string letter, int score)\r\n        {\r\n            BoardTileDto tile = GetTile(row, column);\r\n            Validators.ValidateLetter(letter);\r\n            Validators.ValidateScore(score);\r\n            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);\r\n            tile.Letter = letter;\r\n            tile.Score = score;\r\n        }\r\n\r\n        public BoardWord GetHorizontalWordAtTile(int row, int column)\r\n        {\r\n            Direction direction = Direction.Horizontal;\r\n            List<" + "BoardTileDto> tiles = new();\r\n            BoardTileDto tile = GetTile(row, column);\r\n            if (tile.Letter.Equals(\"\")) return new BoardWord(direction, tiles);\r\n\r\n            tiles.Add(tile);\r\n\r\n            int columnTemp = column - 1;\r\n            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)\r\n            {\r\n                tiles.Insert(0, GetTile(row, columnTemp));\r\n                columnTemp--;\r\n            }\r\n\r\n            columnTemp = column + 1;\r\n            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)\r\n            {\r\n                tiles.Add(GetTile(row, columnTemp));\r\n                columnTemp++;\r\n            }\r\n            return new BoardWord(direction, tiles);\r\n        }\r\n        \r\n        public BoardWord GetVerticalWordAtTile(int row, int column)\r\n        {\r\n            Direction direction = Direction.Vertical;\r\n            List<" + "BoardTileDto> tiles = new();\r\n            BoardTileDto tile = GetTile(row, column);\r\n            if (tile.Letter.Equals(\"\")) return new BoardWord(direction, tiles);\r\n\r\n            tiles.Add(tile);\r\n\r\n            int rowTemp = row - 1;\r\n            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)\r\n            {\r\n                tiles.Insert(0, GetTile(rowTemp, column));\r\n                rowTemp--;\r\n            }\r\n\r\n            rowTemp = row + 1;\r\n            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)\r\n            {\r\n                tiles.Add(GetTile(rowTemp, column));\r\n                rowTemp++;\r\n            }\r\n            return new BoardWord(direction, tiles);\r\n        }\r\n\r\n        private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)\r\n        {\r\n            BoardTileDto tile = GetTile(row, columnTemp, returnNullOnException: true);\r\n            return tile != null && !tile.Letter.Equals(\"\") ? tile : null;\r\n        }\r\n\r\n        public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)\r\n        {\r\n            int actualRowIndex = row - 1;\r\n            int actualColumnIndex = column - 1;\r\n            if (actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length) return returnNullOnException ? null : throw new Exception($\"Row {row} is not valid.\");\r\n            if (actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length) return returnNullOnException ? null : throw new Exception($\"Column {column} is not valid.\");\r\n            BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];\r\n            return tile ?? (returnNullOnException ? null : throw new Exception($\"Tile at row {row}, column {column} is not in play.\"));\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
           "id": "13",
@@ -604,11 +604,11 @@
           "replacement": "!(tile.Letter.Equals(\"\"))",
           "location": {
             "start": {
-              "line": 51,
+              "line": 52,
               "column": 17
             },
             "end": {
-              "line": 51,
+              "line": 52,
               "column": 39
             }
           },
@@ -620,11 +620,11 @@
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 51,
+              "line": 52,
               "column": 36
             },
             "end": {
-              "line": 51,
+              "line": 52,
               "column": 38
             }
           },
@@ -636,11 +636,11 @@
           "replacement": "column + 1",
           "location": {
             "start": {
-              "line": 55,
+              "line": 56,
               "column": 30
             },
             "end": {
-              "line": 55,
+              "line": 56,
               "column": 40
             }
           },
@@ -652,11 +652,11 @@
           "replacement": "TileIsInPlayAndHasLetter(row, columnTemp) == null",
           "location": {
             "start": {
-              "line": 56,
+              "line": 57,
               "column": 20
             },
             "end": {
-              "line": 56,
+              "line": 57,
               "column": 69
             }
           },
@@ -668,11 +668,11 @@
           "replacement": "                columnTemp++",
           "location": {
             "start": {
-              "line": 59,
+              "line": 60,
               "column": 17
             },
             "end": {
-              "line": 59,
+              "line": 60,
               "column": 29
             }
           },
@@ -684,11 +684,11 @@
           "replacement": "column - 1",
           "location": {
             "start": {
-              "line": 62,
+              "line": 63,
               "column": 26
             },
             "end": {
-              "line": 62,
+              "line": 63,
               "column": 36
             }
           },
@@ -700,11 +700,11 @@
           "replacement": "TileIsInPlayAndHasLetter(row, columnTemp) == null",
           "location": {
             "start": {
-              "line": 63,
+              "line": 64,
               "column": 20
             },
             "end": {
-              "line": 63,
+              "line": 64,
               "column": 69
             }
           },
@@ -716,11 +716,11 @@
           "replacement": "                columnTemp--",
           "location": {
             "start": {
-              "line": 66,
+              "line": 67,
               "column": 17
             },
             "end": {
-              "line": 66,
+              "line": 67,
               "column": 29
             }
           },
@@ -732,11 +732,11 @@
           "replacement": "!(tile.Letter.Equals(\"\"))",
           "location": {
             "start": {
-              "line": 75,
+              "line": 77,
               "column": 17
             },
             "end": {
-              "line": 75,
+              "line": 77,
               "column": 39
             }
           },
@@ -748,11 +748,11 @@
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 75,
+              "line": 77,
               "column": 36
             },
             "end": {
-              "line": 75,
+              "line": 77,
               "column": 38
             }
           },
@@ -764,11 +764,11 @@
           "replacement": "row + 1",
           "location": {
             "start": {
-              "line": 79,
+              "line": 81,
               "column": 27
             },
             "end": {
-              "line": 79,
+              "line": 81,
               "column": 34
             }
           },
@@ -780,11 +780,11 @@
           "replacement": "TileIsInPlayAndHasLetter(rowTemp, column) == null",
           "location": {
             "start": {
-              "line": 80,
+              "line": 82,
               "column": 20
             },
             "end": {
-              "line": 80,
+              "line": 82,
               "column": 69
             }
           },
@@ -796,11 +796,11 @@
           "replacement": "                rowTemp++",
           "location": {
             "start": {
-              "line": 83,
+              "line": 85,
               "column": 17
             },
             "end": {
-              "line": 83,
+              "line": 85,
               "column": 26
             }
           },
@@ -812,11 +812,11 @@
           "replacement": "row - 1",
           "location": {
             "start": {
-              "line": 86,
+              "line": 88,
               "column": 23
             },
             "end": {
-              "line": 86,
+              "line": 88,
               "column": 30
             }
           },
@@ -828,11 +828,11 @@
           "replacement": "TileIsInPlayAndHasLetter(rowTemp, column) == null",
           "location": {
             "start": {
-              "line": 87,
+              "line": 89,
               "column": 20
             },
             "end": {
-              "line": 87,
+              "line": 89,
               "column": 69
             }
           },
@@ -844,11 +844,11 @@
           "replacement": "                rowTemp--",
           "location": {
             "start": {
-              "line": 90,
+              "line": 92,
               "column": 17
             },
             "end": {
-              "line": 90,
+              "line": 92,
               "column": 26
             }
           },
@@ -860,11 +860,11 @@
           "replacement": "false",
           "location": {
             "start": {
-              "line": 97,
+              "line": 99,
               "column": 81
             },
             "end": {
-              "line": 97,
+              "line": 99,
               "column": 85
             }
           },
@@ -876,11 +876,11 @@
           "replacement": "tile != null || !tile.Letter.Equals(\"\") ",
           "location": {
             "start": {
-              "line": 98,
+              "line": 100,
               "column": 20
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 59
             }
           },
@@ -892,11 +892,11 @@
           "replacement": "!(tile != null && !tile.Letter.Equals(\"\") )",
           "location": {
             "start": {
-              "line": 98,
+              "line": 100,
               "column": 20
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 59
             }
           },
@@ -908,11 +908,11 @@
           "replacement": "tile == null ",
           "location": {
             "start": {
-              "line": 98,
+              "line": 100,
               "column": 20
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 32
             }
           },
@@ -924,11 +924,11 @@
           "replacement": "tile.Letter.Equals(\"\") ",
           "location": {
             "start": {
-              "line": 98,
+              "line": 100,
               "column": 36
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 59
             }
           },
@@ -940,11 +940,11 @@
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 98,
+              "line": 100,
               "column": 56
             },
             "end": {
-              "line": 98,
+              "line": 100,
               "column": 58
             }
           },
@@ -956,11 +956,11 @@
           "replacement": "row + 1",
           "location": {
             "start": {
-              "line": 103,
+              "line": 105,
               "column": 34
             },
             "end": {
-              "line": 103,
+              "line": 105,
               "column": 41
             }
           },
@@ -972,11 +972,11 @@
           "replacement": "column + 1",
           "location": {
             "start": {
-              "line": 104,
+              "line": 106,
               "column": 37
             },
             "end": {
-              "line": 104,
+              "line": 106,
               "column": 47
             }
           },
@@ -988,11 +988,11 @@
           "replacement": "actualRowIndex <" + " 0 && actualRowIndex >= Tiles.Length",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 17
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 69
             }
           },
@@ -1004,11 +1004,11 @@
           "replacement": "!(actualRowIndex <" + " 0 || actualRowIndex >= Tiles.Length)",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 17
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 69
             }
           },
@@ -1020,11 +1020,11 @@
           "replacement": "actualRowIndex > 0 ",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 17
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 35
             }
           },
@@ -1036,11 +1036,11 @@
           "replacement": "actualRowIndex <" + "= 0 ",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 17
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 35
             }
           },
@@ -1052,11 +1052,11 @@
           "replacement": "actualRowIndex <" + " Tiles.Length",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 39
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 69
             }
           },
@@ -1068,11 +1068,11 @@
           "replacement": "actualRowIndex > Tiles.Length",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 39
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 69
             }
           },
@@ -1084,11 +1084,11 @@
           "replacement": "!(returnNullOnException )",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 78
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 99
             }
           },
@@ -1100,11 +1100,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 105,
+              "line": 107,
               "column": 129
             },
             "end": {
-              "line": 105,
+              "line": 107,
               "column": 155
             }
           },
@@ -1116,11 +1116,11 @@
           "replacement": "actualColumnIndex <" + " 0 && actualColumnIndex >= Tiles[0].Length",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 17
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 78
             }
           },
@@ -1132,11 +1132,11 @@
           "replacement": "!(actualColumnIndex <" + " 0 || actualColumnIndex >= Tiles[0].Length)",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 17
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 78
             }
           },
@@ -1148,11 +1148,11 @@
           "replacement": "actualColumnIndex > 0 ",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 17
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 38
             }
           },
@@ -1164,11 +1164,11 @@
           "replacement": "actualColumnIndex <" + "= 0 ",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 17
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 38
             }
           },
@@ -1180,11 +1180,11 @@
           "replacement": "actualColumnIndex <" + " Tiles[0].Length",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 42
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 78
             }
           },
@@ -1196,11 +1196,11 @@
           "replacement": "actualColumnIndex > Tiles[0].Length",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 42
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 78
             }
           },
@@ -1212,11 +1212,11 @@
           "replacement": "!(returnNullOnException )",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 87
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 108
             }
           },
@@ -1228,11 +1228,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 106,
+              "line": 108,
               "column": 138
             },
             "end": {
-              "line": 106,
+              "line": 108,
               "column": 170
             }
           },
@@ -1244,11 +1244,11 @@
           "replacement": "!(returnNullOnException )",
           "location": {
             "start": {
-              "line": 108,
+              "line": 110,
               "column": 29
             },
             "end": {
-              "line": 108,
+              "line": 110,
               "column": 50
             }
           },
@@ -1260,11 +1260,11 @@
           "replacement": "$\"\"",
           "location": {
             "start": {
-              "line": 108,
+              "line": 110,
               "column": 80
             },
             "end": {
-              "line": 108,
+              "line": 110,
               "column": 133
             }
           },
@@ -2096,19 +2096,243 @@
     },
     "GameObjects\\Implementations\\BoardWord.cs": {
       "language": "cs",
-      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public class BoardWord\r\n    {\r\n        private List<" + "BoardTileDto> Tiles { get; set; }\r\n        public BoardWord(List<" + "BoardTileDto> tiles)\r\n        {\r\n            Tiles = tiles;\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto tile in Tiles)\r\n            {\r\n                sb.Append(tile.Letter);\r\n            }\r\n            return sb.ToString();\r\n        }\r\n    }\r\n}",
+      "source": "using Scrabble_v3_ClassLibrary.DataObjects;\r\nusing System;\r\nusing System.Collections.Generic;\r\nusing System.Text;\r\n\r\nnamespace Scrabble_v3_ClassLibrary.GameObjects.Implementations\r\n{\r\n    public enum Direction\r\n    {\r\n        Horizontal,\r\n        Vertical\r\n    }\r\n\r\n    public class BoardWord\r\n    {\r\n        private Direction Direction{ get; set; }\r\n        private List<" + "BoardTileDto> Tiles { get; set; }\r\n        public BoardWord(Direction direction, List<" + "BoardTileDto> tiles)\r\n        {\r\n            Direction = direction;\r\n            Tiles = tiles;\r\n            ValidateTiles();\r\n        }\r\n\r\n        private void ValidateTiles()\r\n        {\r\n            Func<" + "BoardTileDto, int> constantCoordinate = (t) => t.Row;\r\n            Func<" + "BoardTileDto, int> incrementalCoordinate = (t) => t.Column;\r\n            string constantKeyword = \"Rows\";\r\n            string incrementalKeyword = \"Columns\";\r\n            if (Direction == Direction.Vertical)\r\n            {\r\n                constantCoordinate = (t) => t.Column;\r\n                incrementalCoordinate = (t) => t.Row;\r\n                constantKeyword = \"Columns\";\r\n                incrementalKeyword = \"Rows\";\r\n            }\r\n\r\n            int lastConstantCoordinate = 0;\r\n            int lastIncrementalCoordinate = 0;\r\n            foreach (BoardTileDto tile in Tiles)\r\n            {\r\n                int lastConstantCoordinateTemp = lastConstantCoordinate;\r\n                lastConstantCoordinate = constantCoordinate.Invoke(tile);\r\n                if (lastConstantCoordinateTemp != 0 && lastConstantCoordinate != lastConstantCoordinateTemp)\r\n                {\r\n                    throw new Exception($\"{constantKeyword} in board word are not constant.\");\r\n                }\r\n                \r\n                int lastIncrementalCoordinateTemp = lastIncrementalCoordinate;\r\n                lastIncrementalCoordinate = incrementalCoordinate.Invoke(tile);\r\n                if (lastIncrementalCoordinateTemp == 0) continue;\r\n                if (lastIncrementalCoordinate != lastIncrementalCoordinateTemp + 1)\r\n                {\r\n                    throw new Exception($\"{incrementalKeyword} in board word are not incremental.\");\r\n                }\r\n            }\r\n        }\r\n\r\n        public override string ToString()\r\n        {\r\n            StringBuilder sb = new(\"\");\r\n            foreach (BoardTileDto tile in Tiles)\r\n            {\r\n                sb.Append(tile.Letter);\r\n            }\r\n            return sb.ToString();\r\n        }\r\n    }\r\n}",
       "mutants": [
         {
           "id": "117",
           "mutatorName": "String mutation",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 29,
+              "column": 38
+            },
+            "end": {
+              "line": 29,
+              "column": 44
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "118",
+          "mutatorName": "String mutation",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 30,
+              "column": 41
+            },
+            "end": {
+              "line": 30,
+              "column": 50
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "119",
+          "mutatorName": "Equality mutation",
+          "replacement": "Direction != Direction.Vertical",
+          "location": {
+            "start": {
+              "line": 31,
+              "column": 17
+            },
+            "end": {
+              "line": 31,
+              "column": 48
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "120",
+          "mutatorName": "String mutation",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 35,
+              "column": 35
+            },
+            "end": {
+              "line": 35,
+              "column": 44
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "121",
+          "mutatorName": "String mutation",
+          "replacement": "\"\"",
+          "location": {
+            "start": {
+              "line": 36,
+              "column": 38
+            },
+            "end": {
+              "line": 36,
+              "column": 44
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "122",
+          "mutatorName": "Logical mutation",
+          "replacement": "lastConstantCoordinateTemp != 0 || lastConstantCoordinate != lastConstantCoordinateTemp",
+          "location": {
+            "start": {
+              "line": 45,
+              "column": 21
+            },
+            "end": {
+              "line": 45,
+              "column": 108
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "123",
+          "mutatorName": "Negate expression",
+          "replacement": "!(lastConstantCoordinateTemp != 0 && lastConstantCoordinate != lastConstantCoordinateTemp)",
+          "location": {
+            "start": {
+              "line": 45,
+              "column": 21
+            },
+            "end": {
+              "line": 45,
+              "column": 108
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "124",
+          "mutatorName": "Equality mutation",
+          "replacement": "lastConstantCoordinateTemp == 0 ",
+          "location": {
+            "start": {
+              "line": 45,
+              "column": 21
+            },
+            "end": {
+              "line": 45,
+              "column": 52
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "125",
+          "mutatorName": "Equality mutation",
+          "replacement": "lastConstantCoordinate == lastConstantCoordinateTemp",
+          "location": {
+            "start": {
+              "line": 45,
+              "column": 56
+            },
+            "end": {
+              "line": 45,
+              "column": 108
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "126",
+          "mutatorName": "String mutation",
+          "replacement": "$\"\"",
+          "location": {
+            "start": {
+              "line": 47,
+              "column": 41
+            },
+            "end": {
+              "line": 47,
+              "column": 93
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "127",
+          "mutatorName": "Equality mutation",
+          "replacement": "lastIncrementalCoordinateTemp != 0",
+          "location": {
+            "start": {
+              "line": 52,
+              "column": 21
+            },
+            "end": {
+              "line": 52,
+              "column": 55
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "128",
+          "mutatorName": "Equality mutation",
+          "replacement": "lastIncrementalCoordinate == lastIncrementalCoordinateTemp + 1",
+          "location": {
+            "start": {
+              "line": 53,
+              "column": 21
+            },
+            "end": {
+              "line": 53,
+              "column": 83
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "129",
+          "mutatorName": "Arithmetic mutation",
+          "replacement": "lastIncrementalCoordinateTemp - 1",
+          "location": {
+            "start": {
+              "line": 53,
+              "column": 50
+            },
+            "end": {
+              "line": 53,
+              "column": 83
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "130",
+          "mutatorName": "String mutation",
+          "replacement": "$\"\"",
+          "location": {
+            "start": {
+              "line": 55,
+              "column": 41
+            },
+            "end": {
+              "line": 55,
+              "column": 99
+            }
+          },
+          "status": "Killed"
+        },
+        {
+          "id": "131",
+          "mutatorName": "String mutation",
           "replacement": "\"Stryker was here!\"",
           "location": {
             "start": {
-              "line": 17,
+              "line": 62,
               "column": 36
             },
             "end": {
-              "line": 17,
+              "line": 62,
               "column": 38
             }
           },
@@ -2131,7 +2355,7 @@
       "source": "using System;\r\n\r\nnamespace Scrabble_v3_ClassLibrary\r\n{\r\n    public static class Validators\r\n    {\r\n        public const string LETTER_IS_NULL = \"Letter is null.\";\r\n        public const string LETTER_MORE_THAN_ONE_CHARACTERS = \"Letter is more than 1 characters.\";\r\n        public const string SCORE_BELOW_ZERO = \"Score is below 0.\";\r\n        public static void ValidateLetter(string letter)\r\n        {\r\n            if (letter == null) throw new Exception(LETTER_IS_NULL);\r\n            if (letter.Length > 1) throw new Exception(LETTER_MORE_THAN_ONE_CHARACTERS);\r\n        }\r\n        \r\n        public static void ValidateScore(int score)\r\n        {\r\n            if (score <" + " 0) throw new Exception(SCORE_BELOW_ZERO);\r\n        }\r\n    }\r\n}\r\n",
       "mutants": [
         {
-          "id": "118",
+          "id": "132",
           "mutatorName": "Equality mutation",
           "replacement": "letter != null",
           "location": {
@@ -2147,7 +2371,7 @@
           "status": "Killed"
         },
         {
-          "id": "119",
+          "id": "133",
           "mutatorName": "Equality mutation",
           "replacement": "letter.Length <" + " 1",
           "location": {
@@ -2163,7 +2387,7 @@
           "status": "Killed"
         },
         {
-          "id": "120",
+          "id": "134",
           "mutatorName": "Equality mutation",
           "replacement": "letter.Length >= 1",
           "location": {
@@ -2179,7 +2403,7 @@
           "status": "Killed"
         },
         {
-          "id": "121",
+          "id": "135",
           "mutatorName": "Negate expression",
           "replacement": "!(letter.Length > 1)",
           "location": {
@@ -2195,7 +2419,7 @@
           "status": "Killed"
         },
         {
-          "id": "122",
+          "id": "136",
           "mutatorName": "Equality mutation",
           "replacement": "score > 0",
           "location": {
@@ -2211,7 +2435,7 @@
           "status": "Killed"
         },
         {
-          "id": "123",
+          "id": "137",
           "mutatorName": "Equality mutation",
           "replacement": "score <" + "= 0",
           "location": {
@@ -2227,7 +2451,7 @@
           "status": "Killed"
         },
         {
-          "id": "124",
+          "id": "138",
           "mutatorName": "Negate expression",
           "replacement": "!(score <" + " 0)",
           "location": {
