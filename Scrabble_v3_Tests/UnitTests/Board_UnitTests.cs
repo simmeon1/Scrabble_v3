@@ -13,10 +13,24 @@ namespace Scrabble_v3_Tests.UnitTests
     [TestClass]
     public class Board_UnitTests
     {
+        private Board boardForWordTests = GetBoardWithTiles(new BoardTileDto[][] {
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 1, 2), BoardTileDtoCreator.CreateTileWithLetter("B", 1, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("C", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("D", 2, 2), BoardTileDtoCreator.CreateTileWithLetter("E", 2, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("F", 3, 1), BoardTileDtoCreator.CreateTileWithLetter("G", 3, 2), null },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("H", 4, 1), BoardTileDtoCreator.CreateTileWithCoordinates(4, 2), BoardTileDtoCreator.CreateTileWithLetter("I", 4, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("J", 5, 1), BoardTileDtoCreator.CreateTileWithLetter("K", 5, 2), BoardTileDtoCreator.CreateTileWithCoordinates(5, 3) },
+            });
+
+        private List<BoardTileDto> anchors = GetBoardWithTiles(new BoardTileDto[][] {
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithCoordinates(1, 2), BoardTileDtoCreator.CreateTileWithCoordinates(1, 3), null },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("B", 2, 2), BoardTileDtoCreator.CreateTileWithCoordinates(2, 3), null },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(3, 1), BoardTileDtoCreator.CreateTileWithCoordinates(3, 2), 
+                                        BoardTileDtoCreator.CreateTileWithCoordinates(3, 3), BoardTileDtoCreator.CreateTileWithLetter("C", 3, 4) },
+            }).GetAnchors();
+
         [TestMethod]
         public void ToStringPrintsTwoHorizontalTilesWithLettersCorrectly()
         {
-
             Board board = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A"), BoardTileDtoCreator.CreateTileWithLetter("B") }
             });
@@ -183,202 +197,217 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void GetHorizontalWordAtTileOneOneReturnsEmptyString()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(1, 1).ToString().Equals(""));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(1, 1).ToString().Equals(""));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileOneTwoReturnsAB()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(1, 2).ToString().Equals("AB"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(1, 2).ToString().Equals("AB"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileOneThreeReturnsAB()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(1, 3).ToString().Equals("AB"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(1, 3).ToString().Equals("AB"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileTwoOneReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(2, 1).ToString().Equals("CDE"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(2, 1).ToString().Equals("CDE"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileTwoTwoReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(2, 2).ToString().Equals("CDE"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(2, 2).ToString().Equals("CDE"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileTwoThreeReturnsCDE()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(2, 3).ToString().Equals("CDE"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(2, 3).ToString().Equals("CDE"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileThreeOneReturnsFG()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(3, 1).ToString().Equals("FG"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(3, 1).ToString().Equals("FG"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileThreeTwoReturnsFG()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(3, 2).ToString().Equals("FG"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(3, 2).ToString().Equals("FG"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileThreeThreeThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetWordTests().GetHorizontalWordAtTile(3, 3), "Tile at row 3, column 3 is not in play.");
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => boardForWordTests.GetHorizontalWordAtTile(3, 3), "Tile at row 3, column 3 is not in play.");
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileTenTenThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetWordTests().GetHorizontalWordAtTile(10, 10), "Row 10 is not valid.");
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => boardForWordTests.GetHorizontalWordAtTile(10, 10), "Row 10 is not valid.");
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileFourOneReturnsH()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(4, 1).ToString().Equals("H"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(4, 1).ToString().Equals("H"));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileFourTwoReturnsEmpty()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(4, 2).ToString().Equals(""));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(4, 2).ToString().Equals(""));
         }
 
         [TestMethod]
         public void GetHorizontalWordAtTileFourThreeReturnsI()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetHorizontalWordAtTile(4, 3).ToString().Equals("I"));
+            Assert.IsTrue(boardForWordTests.GetHorizontalWordAtTile(4, 3).ToString().Equals("I"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileOneOneReturnsEmptyString()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(1, 1).ToString().Equals(""));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(1, 1).ToString().Equals(""));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileOneTwoReturnsADG()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(1, 2).ToString().Equals("ADG"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(1, 2).ToString().Equals("ADG"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileOneThreeReturnsBE()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(1, 3).ToString().Equals("BE"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(1, 3).ToString().Equals("BE"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileTwoOneReturnsCFHJ()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(2, 1).ToString().Equals("CFHJ"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(2, 1).ToString().Equals("CFHJ"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileTwoTwoReturnsADG()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(2, 2).ToString().Equals("ADG"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(2, 2).ToString().Equals("ADG"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileTwoThreeReturnsBE()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(2, 3).ToString().Equals("BE"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(2, 3).ToString().Equals("BE"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileThreeOneReturnsCFHJ()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(3, 1).ToString().Equals("CFHJ"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(3, 1).ToString().Equals("CFHJ"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileThreeTwoReturnsADG()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(3, 2).ToString().Equals("ADG"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(3, 2).ToString().Equals("ADG"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileThreeThreeThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetWordTests().GetVerticalWordAtTile(3, 3), "Tile at row 3, column 3 is not in play.");
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => boardForWordTests.GetVerticalWordAtTile(3, 3), "Tile at row 3, column 3 is not in play.");
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileTenTenThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardForGetWordTests().GetVerticalWordAtTile(10, 10), "Row 10 is not valid.");
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => boardForWordTests.GetVerticalWordAtTile(10, 10), "Row 10 is not valid.");
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFourOneReturnsCFHJ()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(4, 1).ToString().Equals("CFHJ"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(4, 1).ToString().Equals("CFHJ"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFourTwoReturnsEmpty()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(4, 2).ToString().Equals(""));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(4, 2).ToString().Equals(""));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFourThreeReturnsI()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(4, 3).ToString().Equals("I"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(4, 3).ToString().Equals("I"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFiveOneReturnsCFHJ()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(5, 1).ToString().Equals("CFHJ"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(5, 1).ToString().Equals("CFHJ"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFiveTwoReturnsK()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(5, 2).ToString().Equals("K"));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(5, 2).ToString().Equals("K"));
         }
 
         [TestMethod]
         public void GetVerticalWordAtTileFiveThreeReturnsI()
         {
-            Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(5, 3).ToString().Equals(""));
+            Assert.IsTrue(boardForWordTests.GetVerticalWordAtTile(5, 3).ToString().Equals(""));
         }
 
         [TestMethod]
-        public void GetAnchorsReturnExpectedTests()
+        public void GetAnchors_CountIsSix()
         {
-            List<BoardTileDto> anchors = GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithCoordinates(1, 2), BoardTileDtoCreator.CreateTileWithCoordinates(1, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("B", 2, 2), BoardTileDtoCreator.CreateTileWithCoordinates(2, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(3, 1), BoardTileDtoCreator.CreateTileWithCoordinates(3, 2), null },
-            }).GetAnchors();
-            Assert.IsTrue(anchors.Count == 5);
+            Assert.IsTrue(anchors.Count == 6);
+        }
+        
+        [TestMethod]
+        public void GetAnchors_OneOneIsAnchor()
+        {
             Assert.IsTrue(anchors[0].Row == 1 && anchors[0].Column == 1);
+        }
+
+        [TestMethod]
+        public void GetAnchors_OneTwoIsAnchor()
+        {
             Assert.IsTrue(anchors[1].Row == 1 && anchors[1].Column == 2);
+        }
+
+        [TestMethod]
+        public void GetAnchors_TwoThreeIsAnchor()
+        {
             Assert.IsTrue(anchors[2].Row == 2 && anchors[2].Column == 3);
+        }
+
+        [TestMethod]
+        public void GetAnchors_ThreeOneIsAnchor()
+        {
             Assert.IsTrue(anchors[3].Row == 3 && anchors[3].Column == 1);
+        }
+
+        [TestMethod]
+        public void GetAnchors_ThreeTwoIsAnchor()
+        {
             Assert.IsTrue(anchors[4].Row == 3 && anchors[4].Column == 2);
         }
 
-        private static Board GetBoardForGetWordTests()
+        [TestMethod]
+        public void GetAnchors_ThreeThreeIsAnchor()
         {
-            return GetBoardWithTiles(new BoardTileDto[][] {
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 1, 2), BoardTileDtoCreator.CreateTileWithLetter("B", 1, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("C", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("D", 2, 2), BoardTileDtoCreator.CreateTileWithLetter("E", 2, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("F", 3, 1), BoardTileDtoCreator.CreateTileWithLetter("G", 3, 2), null },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("H", 4, 1), BoardTileDtoCreator.CreateTileWithCoordinates(4, 2), BoardTileDtoCreator.CreateTileWithLetter("I", 4, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("J", 5, 1), BoardTileDtoCreator.CreateTileWithLetter("K", 5, 2), BoardTileDtoCreator.CreateTileWithCoordinates(5, 3) },
-            });
+            Assert.IsTrue(anchors[5].Row == 3 && anchors[5].Column == 3);
         }
 
         private static Board GetBoardWithOneTile()
