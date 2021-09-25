@@ -39,5 +39,15 @@ namespace Scrabble_v3_ClassLibrary.DataObjects
         {
             return $"Id = {Id}, BoardId = {BoardId}, Row = {Row}, Column = {Column}, IsStart = {IsStart}, Letter = {Letter}, Score = {Score}";
         }
+
+        public bool DoesNotHaveLetter()
+        {
+            return Letter.Equals("");
+        }
+        
+        public bool HasLetter()
+        {
+            return !DoesNotHaveLetter();
+        }
     }
 }

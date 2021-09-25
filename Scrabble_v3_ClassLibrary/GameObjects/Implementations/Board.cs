@@ -27,7 +27,7 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
                 {
                     string letter = " ";
                     if (tile == null) letter = "~";
-                    else if (!tile.Letter.Equals("")) letter = tile.Letter;
+                    else if (tile.HasLetter()) letter = tile.Letter;
                     sb.Append($"[{letter}]");
                 }
             }
@@ -49,44 +49,44 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             Direction direction = Direction.Horizontal;
             List<BoardTileDto> tiles = new();
             BoardTileDto tile = GetTile(row, column);
-            if (tile.Letter.Equals("")) return new BoardWord(direction, tiles);
+            if (tile.DoesNotHaveLetter()) return new BoardWord(direction, tiles);
 
             tiles.Add(tile);
 
             int columnTemp = column - 1;
-            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
+            while (TileIsInPlayAndHasLetter(row, columnTemp))
             {
                 tiles.Insert(0, GetTile(row, columnTemp));
                 columnTemp--;
             }
 
             columnTemp = column + 1;
-            while (TileIsInPlayAndHasLetter(row, columnTemp) != null)
+            while (TileIsInPlayAndHasLetter(row, columnTemp))
             {
                 tiles.Add(GetTile(row, columnTemp));
                 columnTemp++;
             }
             return new BoardWord(direction, tiles);
         }
-        
+
         public BoardWord GetVerticalWordAtTile(int row, int column)
         {
             Direction direction = Direction.Vertical;
             List<BoardTileDto> tiles = new();
             BoardTileDto tile = GetTile(row, column);
-            if (tile.Letter.Equals("")) return new BoardWord(direction, tiles);
+            if (tile.DoesNotHaveLetter()) return new BoardWord(direction, tiles);
 
             tiles.Add(tile);
 
             int rowTemp = row - 1;
-            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)
+            while (TileIsInPlayAndHasLetter(rowTemp, column))
             {
                 tiles.Insert(0, GetTile(rowTemp, column));
                 rowTemp--;
             }
 
             rowTemp = row + 1;
-            while (TileIsInPlayAndHasLetter(rowTemp, column) != null)
+            while (TileIsInPlayAndHasLetter(rowTemp, column))
             {
                 tiles.Add(GetTile(rowTemp, column));
                 rowTemp++;
@@ -94,20 +94,37 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
             return new BoardWord(direction, tiles);
         }
 
-        private BoardTileDto TileIsInPlayAndHasLetter(int row, int columnTemp)
+        private bool TileIsInPlayAndHasLetter(int row, int column)
         {
-            BoardTileDto tile = GetTile(row, columnTemp, returnNullOnException: true);
-            return tile != null && !tile.Letter.Equals("") ? tile : null;
+            BoardTileDto tile = GetTile(row, column, returnNullInsteadOfException: true);
+            return tile != null && tile.HasLetter();
         }
 
-        public BoardTileDto GetTile(int row, int column, bool returnNullOnException = false)
+        public List<BoardTileDto> GetAnchors()
+        {
+            List<BoardTileDto> anchors = new();
+            foreach (BoardTileDto[] rowOfTiles in Tiles)
+            {
+                foreach (BoardTileDto tile in rowOfTiles)
+                {
+                    if (tile == null || tile.HasLetter()) continue;
+                    if (TileIsInPlayAndHasLetter(tile.Row + 1, tile.Column) ||
+                        TileIsInPlayAndHasLetter(tile.Row - 1, tile.Column) ||
+                        TileIsInPlayAndHasLetter(tile.Row, tile.Column + 1) ||
+                        TileIsInPlayAndHasLetter(tile.Row, tile.Column - 1)) anchors.Add(tile);
+                }
+            }
+            return anchors;
+        }
+
+        public BoardTileDto GetTile(int row, int column, bool returnNullInsteadOfException = false)
         {
             int actualRowIndex = row - 1;
             int actualColumnIndex = column - 1;
-            if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) return returnNullOnException ? null : throw new Exception($"Row {row} is not valid.");
-            if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) return returnNullOnException ? null : throw new Exception($"Column {column} is not valid.");
+            if (actualRowIndex < 0 || actualRowIndex >= Tiles.Length) return returnNullInsteadOfException ? null : throw new Exception($"Row {row} is not valid.");
+            if (actualColumnIndex < 0 || actualColumnIndex >= Tiles[0].Length) return returnNullInsteadOfException ? null : throw new Exception($"Column {column} is not valid.");
             BoardTileDto tile = Tiles[actualRowIndex][actualColumnIndex];
-            return tile ?? (returnNullOnException ? null : throw new Exception($"Tile at row {row}, column {column} is not in play."));
+            return tile ?? (returnNullInsteadOfException ? null : throw new Exception($"Tile at row {row}, column {column} is not in play."));
         }
     }
 }

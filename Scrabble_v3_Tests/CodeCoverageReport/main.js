@@ -224,8 +224,8 @@ var assemblies = [
   {
     "name": "Scrabble_v3_ClassLibrary",
     "classes": [
-      { "name": "Scrabble_v3_ClassLibrary.DataObjects.BoardTileDto", "rp": "Scrabble_v3_ClassLibrary_BoardTileDto.html", "cl": 26, "ucl": 0, "cal": 26, "tl": 43, "ct": "LineCoverage", "mc": "-", "cb": 8, "tb": 8, "lch": [], "bch": [], "hc": [] },
-      { "name": "Scrabble_v3_ClassLibrary.GameObjects.Implementations.Board", "rp": "Scrabble_v3_ClassLibrary_Board.html", "cl": 82, "ucl": 0, "cal": 82, "tl": 113, "ct": "LineCoverage", "mc": "-", "cb": 44, "tb": 44, "lch": [], "bch": [], "hc": [] },
+      { "name": "Scrabble_v3_ClassLibrary.DataObjects.BoardTileDto", "rp": "Scrabble_v3_ClassLibrary_BoardTileDto.html", "cl": 32, "ucl": 0, "cal": 32, "tl": 53, "ct": "LineCoverage", "mc": "-", "cb": 8, "tb": 8, "lch": [], "bch": [], "hc": [] },
+      { "name": "Scrabble_v3_ClassLibrary.GameObjects.Implementations.Board", "rp": "Scrabble_v3_ClassLibrary_Board.html", "cl": 97, "ucl": 0, "cal": 97, "tl": 130, "ct": "LineCoverage", "mc": "-", "cb": 58, "tb": 58, "lch": [], "bch": [], "hc": [] },
       { "name": "Scrabble_v3_ClassLibrary.GameObjects.Implementations.BoardTileArrayCreator", "rp": "Scrabble_v3_ClassLibrary_BoardTileArrayCreator.html", "cl": 42, "ucl": 0, "cal": 42, "tl": 65, "ct": "LineCoverage", "mc": "-", "cb": 36, "tb": 36, "lch": [], "bch": [], "hc": [] },
       { "name": "Scrabble_v3_ClassLibrary.GameObjects.Implementations.BoardWord", "rp": "Scrabble_v3_ClassLibrary_BoardWord.html", "cl": 45, "ucl": 0, "cal": 45, "tl": 70, "ct": "LineCoverage", "mc": "-", "cb": 14, "tb": 14, "lch": [], "bch": [], "hc": [] },
       { "name": "Scrabble_v3_ClassLibrary.Validators", "rp": "Scrabble_v3_ClassLibrary_Validators.html", "cl": 7, "ucl": 0, "cal": 7, "tl": 21, "ct": "LineCoverage", "mc": "-", "cb": 6, "tb": 6, "lch": [], "bch": [], "hc": [] },

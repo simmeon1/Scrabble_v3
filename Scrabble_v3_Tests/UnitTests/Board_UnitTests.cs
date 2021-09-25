@@ -113,47 +113,47 @@ namespace Scrabble_v3_Tests.UnitTests
         public void GetTileGetsCorrectTileFromBoardWithMultipleRows_ReturnNullOnException()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1) }, new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(2) } });
-            Assert.IsTrue(board.GetTile(2, 1, returnNullOnException: true).Id == 2);
+            Assert.IsTrue(board.GetTile(2, 1, returnNullInsteadOfException: true).Id == 2);
         }
 
         [TestMethod]
         public void GetTileGetsCorrectTileFromBoardWithMultipleColumns_ReturnNullOnException()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithId(1), BoardTileDtoCreator.CreateTileWithId(2) } });
-            Assert.IsTrue(board.GetTile(1, 2, returnNullOnException: true).Id == 2);
+            Assert.IsTrue(board.GetTile(1, 2, returnNullInsteadOfException: true).Id == 2);
         }
 
         [TestMethod]
         public void GetTileReturnsNullForNullTile()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { null } });
-            Assert.IsTrue(board.GetTile(1, 1, returnNullOnException: true) == null);
+            Assert.IsTrue(board.GetTile(1, 1, returnNullInsteadOfException: true) == null);
         }
 
         [TestMethod]
         public void GetTileReturnsNullForRowBelowZero()
         {
-            Assert.IsTrue(GetBoardWithOneTile().GetTile(-1, 1, returnNullOnException: true) == null);
+            Assert.IsTrue(GetBoardWithOneTile().GetTile(-1, 1, returnNullInsteadOfException: true) == null);
         }
 
         [TestMethod]
         public void GetTileReturnsNullForRowAboveTheLast()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() }, new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
-            Assert.IsTrue(board.GetTile(3, 1, returnNullOnException: true) == null);
+            Assert.IsTrue(board.GetTile(3, 1, returnNullInsteadOfException: true) == null);
         }
 
         [TestMethod]
         public void GetTileReturnsNullForColumnBelowZero()
         {
-            Assert.IsTrue(GetBoardWithOneTile().GetTile(1, -1, returnNullOnException: true) == null);
+            Assert.IsTrue(GetBoardWithOneTile().GetTile(1, -1, returnNullInsteadOfException: true) == null);
         }
 
         [TestMethod]
         public void GetTileReturnsNullForColumnAboveTheLast()
         {
             Board board = GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile(), BoardTileDtoCreator.CreateTile() } });
-            Assert.IsTrue(board.GetTile(1, 3, returnNullOnException: true) == null);
+            Assert.IsTrue(board.GetTile(1, 3, returnNullInsteadOfException: true) == null);
         }
 
         [TestMethod]
@@ -389,6 +389,21 @@ namespace Scrabble_v3_Tests.UnitTests
         public void GetVerticalWordAtTileFiveThreeReturnsI()
         {
             Assert.IsTrue(GetBoardForGetWordTests().GetVerticalWordAtTile(5, 3).ToString().Equals(""));
+        }
+
+        [TestMethod]
+        public void GetAnchorsReturnExpectedTests()
+        {
+            List<BoardTileDto> anchors = GetBoardWithTiles(new BoardTileDto[][] {
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithCoordinates(1, 2), BoardTileDtoCreator.CreateTileWithCoordinates(1, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(2, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 2, 2), BoardTileDtoCreator.CreateTileWithCoordinates(2, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(3, 1), BoardTileDtoCreator.CreateTileWithCoordinates(3, 2), null },
+            }).GetAnchors();
+            Assert.IsTrue(anchors.Count == 4);
+            Assert.IsTrue(anchors[0].Row == 1 && anchors[0].Column == 2);
+            Assert.IsTrue(anchors[1].Row == 2 && anchors[1].Column == 1);
+            Assert.IsTrue(anchors[2].Row == 2 && anchors[2].Column == 3);
+            Assert.IsTrue(anchors[3].Row == 3 && anchors[3].Column == 2);
         }
 
         private Board GetBoardForGetWordTests()
