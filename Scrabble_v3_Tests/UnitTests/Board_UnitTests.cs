@@ -13,16 +13,6 @@ namespace Scrabble_v3_Tests.UnitTests
     [TestClass]
     public class Board_UnitTests
     {
-        Mock<IBoardTileArrayCreator> tileArrayCreator;
-        Mock<ILetterRepository> letterRepo;
-
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            tileArrayCreator = new();
-            letterRepo = new();
-        }
-
         [TestMethod]
         public void ToStringPrintsTwoHorizontalTilesWithLettersCorrectly()
         {
@@ -159,38 +149,11 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void PlaceLetterPlacesLetterCorrectly()
         {
-            letterRepo.Setup(x => x.LetterIsValid(It.IsAny<string>())).Returns(true);
             Board board = GetBoardWithOneTile();
             board.PlaceLetter(1, 1, "C", 5);
             BoardTileDto boardTileDto = board.GetTile(1, 1);
             Assert.IsTrue(boardTileDto.Letter.Equals("C"));
             Assert.IsTrue(boardTileDto.Score == 5);
-        }
-
-        [TestMethod]
-        public void PlaceLetterThrowsExceptionDueToInvalidCharacter()
-        {
-            letterRepo.Setup(x => x.LetterIsValid(It.IsAny<string>())).Returns(false);
-            Board board = GetBoardWithOneTile();
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => board.PlaceLetter(1, 1, "C", 5), Board.LETTER_IS_NOT_VALID);
-        }
-
-        [TestMethod]
-        public void PlaceLetterThrowsExceptionDueToNullLetter()
-        {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardWithOneTile().PlaceLetter(1, 1, null, 5), Validators.LETTER_IS_NULL);
-        }
-
-        [TestMethod]
-        public void PlaceLetterThrowsExceptionDueToMultipleCharacters()
-        {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardWithOneTile().PlaceLetter(1, 1, "ab", 5), Validators.LETTER_MORE_THAN_ONE_CHARACTERS);
-        }
-
-        [TestMethod]
-        public void PlaceLetterThrowsExceptionDueToNegativeScore()
-        {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => GetBoardWithOneTile().PlaceLetter(1, 1, "A", -1), Validators.SCORE_BELOW_ZERO);
         }
 
         [TestMethod]
@@ -406,7 +369,7 @@ namespace Scrabble_v3_Tests.UnitTests
             Assert.IsTrue(anchors[3].Row == 3 && anchors[3].Column == 2);
         }
 
-        private Board GetBoardForGetWordTests()
+        private static Board GetBoardForGetWordTests()
         {
             return GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 1, 2), BoardTileDtoCreator.CreateTileWithLetter("B", 1, 3) },
@@ -417,15 +380,14 @@ namespace Scrabble_v3_Tests.UnitTests
             });
         }
 
-        private Board GetBoardWithOneTile()
+        private static Board GetBoardWithOneTile()
         {
             return GetBoardWithTiles(new BoardTileDto[][] { new BoardTileDto[] { BoardTileDtoCreator.CreateTile() } });
         }
 
-        private Board GetBoardWithTiles(BoardTileDto[][] tiles)
+        private static Board GetBoardWithTiles(BoardTileDto[][] tiles)
         {
-            tileArrayCreator.Setup(x => x.GetBoardTileArray(It.IsAny<IEnumerable<BoardTileDto>>())).Returns(tiles);
-            return new(tileArrayCreator.Object, new List<BoardTileDto>(), letterRepo.Object);
+            return new(tiles);
         }
     }
 }

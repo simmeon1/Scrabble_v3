@@ -8,13 +8,10 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
 {
     public class Board
     {
-        public const string LETTER_IS_NOT_VALID = "Letter is not valid.";
         private BoardTileDto[][] Tiles { get; set; }
-        private ILetterRepository LetterRepository { get; set; }
-        public Board(IBoardTileArrayCreator tileArrayCreator, IEnumerable<BoardTileDto> tiles, ILetterRepository letterRepository)
+        public Board(BoardTileDto[][] tiles)
         {
-            Tiles = tileArrayCreator.GetBoardTileArray(tiles);
-            LetterRepository = letterRepository;
+            Tiles = tiles;
         }
 
         public override string ToString()
@@ -37,9 +34,6 @@ namespace Scrabble_v3_ClassLibrary.GameObjects.Implementations
         public void PlaceLetter(int row, int column, string letter, int score)
         {
             BoardTileDto tile = GetTile(row, column);
-            Validators.ValidateLetter(letter);
-            Validators.ValidateScore(score);
-            if (!LetterRepository.LetterIsValid(letter)) throw new Exception(LETTER_IS_NOT_VALID);
             tile.Letter = letter;
             tile.Score = score;
         }
