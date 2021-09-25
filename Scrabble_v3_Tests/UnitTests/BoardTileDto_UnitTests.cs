@@ -35,19 +35,19 @@ namespace Scrabble_v3_Tests.UnitTests
         [TestMethod]
         public void NullLetterThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, null, 0), Validators.LETTER_IS_NULL);
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, null, 0), BoardTileDto.LETTER_IS_NULL);
         }
         
         [TestMethod]
         public void MultipleLettersThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, "ab", 0), Validators.LETTER_MORE_THAN_ONE_CHARACTERS);
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, "ab", 0), BoardTileDto.LETTER_MORE_THAN_ONE_CHARACTERS);
         }
         
         [TestMethod]
         public void ScoreBelowZeroThrowsException()
         {
-            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, "a", -1), Validators.SCORE_BELOW_ZERO);
+            ExceptionAsserter.AssertExceptionWithMessageIsThrown(() => BoardTileDtoCreator.CreateTile(1, 1, 1, 1, true, "a", -1), BoardTileDto.SCORE_BELOW_ZERO);
         }
 
         [TestMethod]

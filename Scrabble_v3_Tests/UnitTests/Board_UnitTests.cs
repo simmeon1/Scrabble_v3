@@ -359,14 +359,15 @@ namespace Scrabble_v3_Tests.UnitTests
         {
             List<BoardTileDto> anchors = GetBoardWithTiles(new BoardTileDto[][] {
                 new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(1, 1), BoardTileDtoCreator.CreateTileWithCoordinates(1, 2), BoardTileDtoCreator.CreateTileWithCoordinates(1, 3) },
-                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(2, 1), BoardTileDtoCreator.CreateTileWithLetter("A", 2, 2), BoardTileDtoCreator.CreateTileWithCoordinates(2, 3) },
+                new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithLetter("A", 2, 1), BoardTileDtoCreator.CreateTileWithLetter("B", 2, 2), BoardTileDtoCreator.CreateTileWithCoordinates(2, 3) },
                 new BoardTileDto[] { BoardTileDtoCreator.CreateTileWithCoordinates(3, 1), BoardTileDtoCreator.CreateTileWithCoordinates(3, 2), null },
             }).GetAnchors();
-            Assert.IsTrue(anchors.Count == 4);
-            Assert.IsTrue(anchors[0].Row == 1 && anchors[0].Column == 2);
-            Assert.IsTrue(anchors[1].Row == 2 && anchors[1].Column == 1);
+            Assert.IsTrue(anchors.Count == 5);
+            Assert.IsTrue(anchors[0].Row == 1 && anchors[0].Column == 1);
+            Assert.IsTrue(anchors[1].Row == 1 && anchors[1].Column == 2);
             Assert.IsTrue(anchors[2].Row == 2 && anchors[2].Column == 3);
-            Assert.IsTrue(anchors[3].Row == 3 && anchors[3].Column == 2);
+            Assert.IsTrue(anchors[3].Row == 3 && anchors[3].Column == 1);
+            Assert.IsTrue(anchors[4].Row == 3 && anchors[4].Column == 2);
         }
 
         private static Board GetBoardForGetWordTests()
